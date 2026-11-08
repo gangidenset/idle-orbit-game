@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+// Google's public AdMob TEST app id (iOS). Production builds override this in
+// ios/Flutter/Secrets.xcconfig (git-ignored), see README.
+ADMOB_APP_ID=ca-app-pub-3940256099942544~1458002511
+#include? "Secrets.xcconfig"

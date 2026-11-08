@@ -1,0 +1,436 @@
+{
+  "configVersion": 1,
+  "tickSeconds": 0.25,
+  "autosaveSeconds": 15,
+
+  "startingResources": { "ore": 30, "energy": 0, "alloy": 0, "research": 0 },
+
+  "offline": {
+    "baseCapHours": 8,
+    "baseEfficiency": 0.6,
+    "minSecondsForReward": 60,
+    "simStepSeconds": 60,
+    "adMultiplier": 2
+  },
+
+  "player": {
+    "xpPerFacilityUpgrade": 1,
+    "xpPerRobotUpgrade": 2,
+    "xpPerResearch": 3,
+    "xpPerPlanet": 25,
+    "xpBase": 10,
+    "xpExponent": 1.5,
+    "productionBonusPerLevel": 0.01
+  },
+
+  "milestones": [
+    { "level": 10, "multiplier": 2 },
+    { "level": 25, "multiplier": 2 },
+    { "level": 50, "multiplier": 2 },
+    { "level": 100, "multiplier": 3 },
+    { "level": 200, "multiplier": 3 }
+  ],
+
+  "storage": {
+    "facilityId": "storage",
+    "baseCap": { "ore": 1500, "energy": 600, "alloy": 300 },
+    "capGrowthPerLevel": 1.6
+  },
+
+  "facilities": [
+    {
+      "id": "ore_mine",
+      "name": "鉱石採掘施設",
+      "description": "地表から鉱石を自動で採掘する。",
+      "icon": "ore",
+      "startLevel": 1,
+      "produces": { "ore": 1.0 },
+      "consumes": {},
+      "baseCost": { "ore": 10 },
+      "costGrowth": 1.15,
+      "requires": {}
+    },
+    {
+      "id": "power_plant",
+      "name": "エネルギー発電施設",
+      "description": "恒星光からエネルギーを生み出す。",
+      "icon": "energy",
+      "startLevel": 0,
+      "produces": { "energy": 1.0 },
+      "consumes": {},
+      "baseCost": { "ore": 40 },
+      "costGrowth": 1.16,
+      "requires": { "ore_mine": 3 }
+    },
+    {
+      "id": "alloy_smelter",
+      "name": "合金精錬施設",
+      "description": "鉱石とエネルギーを合金に精錬する。",
+      "icon": "alloy",
+      "startLevel": 0,
+      "produces": { "alloy": 0.25 },
+      "consumes": { "ore": 1.5, "energy": 0.8 },
+      "baseCost": { "ore": 250, "energy": 60 },
+      "costGrowth": 1.18,
+      "requires": { "power_plant": 2 }
+    },
+    {
+      "id": "research_lab",
+      "name": "研究施設",
+      "description": "エネルギーを消費して研究ポイントを生む。",
+      "icon": "research",
+      "startLevel": 0,
+      "produces": { "research": 0.1 },
+      "consumes": { "energy": 0.6 },
+      "baseCost": { "ore": 600, "alloy": 15 },
+      "costGrowth": 1.22,
+      "requires": { "alloy_smelter": 1 }
+    },
+    {
+      "id": "storage",
+      "name": "資源保管施設",
+      "description": "鉱石・エネルギー・合金の保管上限を増やす。",
+      "icon": "storage",
+      "startLevel": 0,
+      "produces": {},
+      "consumes": {},
+      "baseCost": { "ore": 200 },
+      "costGrowth": 1.55,
+      "requires": { "ore_mine": 2 }
+    }
+  ],
+
+  "robots": [
+    {
+      "id": "miner_bot",
+      "name": "採掘ボット MK-1",
+      "description": "鉱石の生産量を強化する。",
+      "special": false,
+      "effect": { "type": "production", "resource": "ore", "perLevel": 0.10 },
+      "baseCost": { "ore": 150 },
+      "costGrowth": 1.35,
+      "maxLevel": 100,
+      "unlock": { "planet": "terra_nova" }
+    },
+    {
+      "id": "power_drone",
+      "name": "発電ドローン",
+      "description": "エネルギーの生産量を強化する。",
+      "special": false,
+      "effect": { "type": "production", "resource": "energy", "perLevel": 0.10 },
+      "baseCost": { "ore": 300 },
+      "costGrowth": 1.35,
+      "maxLevel": 100,
+      "unlock": { "planet": "terra_nova" }
+    },
+    {
+      "id": "smelter_bot",
+      "name": "精錬アーム",
+      "description": "合金の生産量を強化する。",
+      "special": false,
+      "effect": { "type": "production", "resource": "alloy", "perLevel": 0.10 },
+      "baseCost": { "ore": 800, "alloy": 20 },
+      "costGrowth": 1.38,
+      "maxLevel": 100,
+      "unlock": { "planet": "terra_nova" }
+    },
+    {
+      "id": "analyst_bot",
+      "name": "解析ユニット",
+      "description": "研究ポイントの生産量を強化する。",
+      "special": false,
+      "effect": { "type": "production", "resource": "research", "perLevel": 0.10 },
+      "baseCost": { "alloy": 60 },
+      "costGrowth": 1.4,
+      "maxLevel": 100,
+      "unlock": { "planet": "glacies" }
+    },
+    {
+      "id": "courier_bot",
+      "name": "輸送ボット【特殊】",
+      "description": "特殊能力：放置中の生産効率が上がる。",
+      "special": true,
+      "effect": { "type": "offlineEfficiency", "resource": "all", "perLevel": 0.04 },
+      "baseCost": { "alloy": 150, "research": 30 },
+      "costGrowth": 1.8,
+      "maxLevel": 10,
+      "unlock": { "planet": "glacies" }
+    },
+    {
+      "id": "overseer_bot",
+      "name": "統括AI オーバーシア【特殊】",
+      "description": "特殊能力：全資源の生産量が上がる。",
+      "special": true,
+      "effect": { "type": "production", "resource": "all", "perLevel": 0.08 },
+      "baseCost": { "alloy": 2000, "research": 300 },
+      "costGrowth": 1.9,
+      "maxLevel": 25,
+      "unlock": { "planet": "dunebell" }
+    },
+    {
+      "id": "pioneer_bot",
+      "name": "開拓者ボット【特典】",
+      "description": "初心者パック特典：全資源の生産量が上がる。",
+      "special": true,
+      "effect": { "type": "production", "resource": "all", "perLevel": 0.05 },
+      "baseCost": { "ore": 500 },
+      "costGrowth": 1.6,
+      "maxLevel": 20,
+      "unlock": { "entitlement": "starter_pack" }
+    }
+  ],
+
+  "planets": [
+    {
+      "id": "terra_nova",
+      "name": "始まりの惑星 テラノヴァ",
+      "description": "穏やかな岩石惑星。すべてがここから始まる。",
+      "color": "#4FA3E0",
+      "permanentMultiplier": 1.0,
+      "activeBonus": {},
+      "unlockCost": {}
+    },
+    {
+      "id": "glacies",
+      "name": "氷結惑星 グラシエ",
+      "description": "氷の下に眠るエネルギー鉱脈。滞在中はエネルギー生産 ×2。",
+      "color": "#9EE7F5",
+      "permanentMultiplier": 1.5,
+      "activeBonus": { "energy": 2.0 },
+      "unlockCost": { "alloy": 1500, "research": 150 }
+    },
+    {
+      "id": "dunebell",
+      "name": "砂漠惑星 デューンベル",
+      "description": "鉱脈が地表に露出した砂の惑星。滞在中は鉱石生産 ×2。",
+      "color": "#E3B261",
+      "permanentMultiplier": 2.0,
+      "activeBonus": { "ore": 2.0 },
+      "unlockCost": { "alloy": 400000, "research": 40000 }
+    },
+    {
+      "id": "vulcara",
+      "name": "火山惑星 ヴァルカラ",
+      "description": "溶岩の熱で精錬が加速する。滞在中は合金生産 ×2。",
+      "color": "#F26B3A",
+      "permanentMultiplier": 2.5,
+      "activeBonus": { "alloy": 2.0 },
+      "unlockCost": { "alloy": 1.0e8, "research": 1.0e7 }
+    },
+    {
+      "id": "unknown",
+      "name": "未知の惑星 ？？？",
+      "description": "観測不能な信号を発する謎の惑星。滞在中は研究 ×2。",
+      "color": "#B07CFF",
+      "permanentMultiplier": 3.0,
+      "activeBonus": { "research": 2.0 },
+      "unlockCost": { "alloy": 5.0e10, "research": 5.0e9 }
+    }
+  ],
+
+  "research": [
+    {
+      "id": "drill_tech",
+      "name": "高速ドリル",
+      "description": "鉱石生産 +15% / Lv",
+      "effect": { "type": "production", "resource": "ore", "perLevel": 0.15 },
+      "baseCost": { "research": 10 },
+      "costGrowth": 1.6,
+      "maxLevel": 20
+    },
+    {
+      "id": "solar_tech",
+      "name": "高効率ソーラー",
+      "description": "エネルギー生産 +15% / Lv",
+      "effect": { "type": "production", "resource": "energy", "perLevel": 0.15 },
+      "baseCost": { "research": 10 },
+      "costGrowth": 1.6,
+      "maxLevel": 20
+    },
+    {
+      "id": "smelt_tech",
+      "name": "精錬触媒",
+      "description": "合金生産 +15% / Lv",
+      "effect": { "type": "production", "resource": "alloy", "perLevel": 0.15 },
+      "baseCost": { "research": 20 },
+      "costGrowth": 1.65,
+      "maxLevel": 20
+    },
+    {
+      "id": "logistics",
+      "name": "物流最適化",
+      "description": "施設強化コスト -3% / Lv",
+      "effect": { "type": "costReduction", "resource": "all", "perLevel": 0.03 },
+      "baseCost": { "research": 40 },
+      "costGrowth": 1.9,
+      "maxLevel": 10
+    },
+    {
+      "id": "warehouse",
+      "name": "圧縮保管",
+      "description": "保管上限 +20% / Lv",
+      "effect": { "type": "storageCap", "resource": "all", "perLevel": 0.20 },
+      "baseCost": { "research": 30 },
+      "costGrowth": 1.8,
+      "maxLevel": 15
+    },
+    {
+      "id": "autonomy",
+      "name": "自律運転",
+      "description": "放置報酬の上限 +1時間 / Lv",
+      "effect": { "type": "offlineCapHours", "resource": "all", "perLevel": 1.0 },
+      "baseCost": { "research": 80 },
+      "costGrowth": 2.4,
+      "maxLevel": 4
+    }
+  ],
+
+  "prestige": {
+    "name": "星系ワープ",
+    "requiredPlanet": "dunebell",
+    "metric": "runAlloy",
+    "pointsDivisor": 2000,
+    "pointsExponent": 0.5,
+    "upgrades": [
+      {
+        "id": "pp_production",
+        "name": "ワープコア",
+        "description": "全施設の生産量 +25% / Lv",
+        "effect": { "type": "production", "resource": "all", "perLevel": 0.25 },
+        "baseCost": { "prestige": 1 },
+        "costGrowth": 1.5,
+        "maxLevel": 100
+      },
+      {
+        "id": "pp_offline",
+        "name": "量子休眠",
+        "description": "放置報酬の効率 +10% / Lv",
+        "effect": { "type": "offlineEfficiency", "resource": "all", "perLevel": 0.10 },
+        "baseCost": { "prestige": 2 },
+        "costGrowth": 1.7,
+        "maxLevel": 10
+      },
+      {
+        "id": "pp_robots",
+        "name": "ロボット改良設計",
+        "description": "ロボットの性能 +20% / Lv",
+        "effect": { "type": "robotPower", "resource": "all", "perLevel": 0.20 },
+        "baseCost": { "prestige": 2 },
+        "costGrowth": 1.6,
+        "maxLevel": 50
+      },
+      {
+        "id": "pp_start",
+        "name": "補給コンテナ",
+        "description": "転生直後に鉱石2,000・エネルギー500・合金50を支給 / Lv",
+        "effect": { "type": "startingResources", "resource": "all", "perLevel": 1.0 },
+        "grantsPerLevel": { "ore": 2000, "energy": 500, "alloy": 50 },
+        "baseCost": { "prestige": 1 },
+        "costGrowth": 1.8,
+        "maxLevel": 20
+      }
+    ]
+  },
+
+  "boosts": {
+    "ad": { "multiplier": 2.0, "minutes": 30, "maxStackMinutes": 240 }
+  },
+
+  "freeReward": {
+    "cooldownMinutes": 30,
+    "productionMinutes": 20
+  },
+
+  "ads": {
+    "interstitial": {
+      "frequencies": {
+        "low": 600,
+        "standard": 300
+      },
+      "defaultFrequency": "standard",
+      "firstAfterSessionSeconds": 180,
+      "maxPerSession": 4,
+      "cooldownAfterRewardedSeconds": 120
+    }
+  },
+
+  "loginRewards": [
+    { "day": 1, "reward": { "productionMinutes": 10 } },
+    { "day": 2, "reward": { "productionMinutes": 15 } },
+    { "day": 3, "reward": { "research": 20 } },
+    { "day": 4, "reward": { "productionMinutes": 20 } },
+    { "day": 5, "reward": { "boostMinutes": 30 } },
+    { "day": 6, "reward": { "productionMinutes": 30 } },
+    { "day": 7, "reward": { "research": 100, "boostMinutes": 60 } }
+  ],
+
+  "missions": {
+    "dailyCount": 3,
+    "pool": [
+      { "id": "m_upgrade_10", "name": "施設を10回強化する", "metric": "facilityUpgrades", "target": 10, "reward": { "productionMinutes": 15 } },
+      { "id": "m_upgrade_25", "name": "施設を25回強化する", "metric": "facilityUpgrades", "target": 25, "reward": { "research": 30 } },
+      { "id": "m_robot_3", "name": "ロボットを3回雇用・強化する", "metric": "robotUpgrades", "target": 3, "reward": { "productionMinutes": 15 } },
+      { "id": "m_ore_play", "name": "プレイ中に鉱石を5分ぶん採掘する", "metric": "oreMinutes", "target": 5, "reward": { "productionMinutes": 10 } },
+      { "id": "m_offline", "name": "放置報酬を受け取る", "metric": "offlineClaims", "target": 1, "reward": { "research": 15 } },
+      { "id": "m_research_2", "name": "研究を2回行う", "metric": "researchCompleted", "target": 2, "reward": { "boostMinutes": 15 } },
+      { "id": "m_play_10", "name": "10分間基地を運営する", "metric": "playSeconds", "target": 600, "reward": { "productionMinutes": 20 } }
+    ]
+  },
+
+  "achievements": [
+    { "id": "a_ore_1", "name": "見習い採掘者", "description": "鉱石を累計1,000採掘", "metric": "lifetimeOre", "target": 1000, "productionBonus": 0.02 },
+    { "id": "a_ore_2", "name": "熟練採掘者", "description": "鉱石を累計100万採掘", "metric": "lifetimeOre", "target": 1000000, "productionBonus": 0.03 },
+    { "id": "a_ore_3", "name": "惑星を掘る者", "description": "鉱石を累計10億採掘", "metric": "lifetimeOre", "target": 1000000000, "productionBonus": 0.05 },
+    { "id": "a_alloy_1", "name": "合金職人", "description": "合金を累計10,000精錬", "metric": "lifetimeAlloy", "target": 10000, "productionBonus": 0.03 },
+    { "id": "a_upg_1", "name": "建設主任", "description": "施設を累計50回強化", "metric": "facilityUpgrades", "target": 50, "productionBonus": 0.02 },
+    { "id": "a_upg_2", "name": "建設局長", "description": "施設を累計500回強化", "metric": "facilityUpgrades", "target": 500, "productionBonus": 0.04 },
+    { "id": "a_planet_2", "name": "星を渡る者", "description": "惑星を2つ解放", "metric": "planetsUnlocked", "target": 2, "productionBonus": 0.03 },
+    { "id": "a_planet_5", "name": "未知への到達", "description": "惑星を5つ解放", "metric": "planetsUnlocked", "target": 5, "productionBonus": 0.10 },
+    { "id": "a_prestige_1", "name": "はじめてのワープ", "description": "星系ワープを1回行う", "metric": "prestigeCount", "target": 1, "productionBonus": 0.05 },
+    { "id": "a_prestige_10", "name": "時空の旅人", "description": "星系ワープを10回行う", "metric": "prestigeCount", "target": 10, "productionBonus": 0.10 }
+  ],
+
+  "shop": {
+    "products": [
+      {
+        "id": "remove_ads",
+        "name": "広告削除",
+        "description": "インタースティシャル広告（強制広告）を永久に非表示にします。任意で視聴するリワード広告は引き続き利用できます。",
+        "type": "nonConsumable",
+        "storeIds": { "android": "remove_ads", "ios": "com.idleorbit.remove_ads" },
+        "placeholderPriceJpy": 480,
+        "grants": { "entitlement": "no_ads" }
+      },
+      {
+        "id": "starter_pack",
+        "name": "初心者パック",
+        "description": "合金500・研究ポイント100と特典ロボット「開拓者ボット」を獲得（1回限り）。",
+        "type": "nonConsumable",
+        "storeIds": { "android": "starter_pack", "ios": "com.idleorbit.starter_pack" },
+        "placeholderPriceJpy": 160,
+        "grants": { "entitlement": "starter_pack", "resources": { "alloy": 500, "research": 100 } }
+      },
+      {
+        "id": "boost_24h",
+        "name": "生産ブースト 24時間",
+        "description": "24時間、全資源の生産量が2倍になります（広告ブーストと重複可能）。",
+        "type": "consumable",
+        "storeIds": { "android": "boost_24h", "ios": "com.idleorbit.boost_24h" },
+        "placeholderPriceJpy": 250,
+        "grants": { "boost": { "multiplier": 2.0, "minutes": 1440 } }
+      },
+      {
+        "id": "premium_pack",
+        "name": "プレミアムパック",
+        "description": "特別な基地カラー「オーロラ」、全生産 恒久+50%、放置上限 +4時間、広告削除、リワード広告の視聴スキップを含みます。",
+        "type": "nonConsumable",
+        "storeIds": { "android": "premium_pack", "ios": "com.idleorbit.premium_pack" },
+        "placeholderPriceJpy": 1200,
+        "grants": { "entitlement": "premium" }
+      }
+    ],
+    "premium": { "productionBonus": 0.5, "offlineCapHours": 4 },
+    "rewardedSkipEntitlements": ["premium"],
+    "noAdsEntitlements": ["no_ads", "premium"]
+  }
+}

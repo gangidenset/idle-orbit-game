@@ -7,6 +7,7 @@ import 'package:idle_orbit/game/game_controller.dart';
 import 'package:idle_orbit/game/model/resources.dart';
 import 'package:idle_orbit/services/ads/ad_service.dart';
 import 'package:idle_orbit/services/analytics/analytics_service.dart';
+import 'package:idle_orbit/services/audio/sound_service.dart';
 import 'package:idle_orbit/services/iap/purchase_service.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +26,11 @@ void main() {
     await tester.runAsync(c.start);
     c.state.resources[ResourceType.alloy] = 1e6;
     c.state.resources[ResourceType.research] = 1e6;
-    await tester.pumpWidget(ChangeNotifierProvider.value(
-      value: c,
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: c),
+        Provider<SoundService>.value(value: const SilentSoundService()),
+      ],
       child: const MaterialApp(home: PlanetsScreen()),
     ));
     await tester.tap(find.text('開拓'));

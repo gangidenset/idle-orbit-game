@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 import '../../core/format.dart';
 import '../../game/config/balance_config.dart';
+import '../../services/audio/sound_service.dart';
+import '../../ui/widgets.dart';
 
 /// Celebration shown when a new planet is unlocked.
 Future<void> showPlanetUnlocked(BuildContext context, PlanetConfig planet) {
+  playSfx(context, Sfx.unlock);
   return showGeneralDialog<void>(
     context: context,
     barrierDismissible: false,

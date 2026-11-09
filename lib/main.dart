@@ -16,6 +16,8 @@ import 'services/ads/admob_ad_service.dart';
 import 'services/analytics/analytics_service.dart';
 import 'services/iap/purchase_service.dart';
 import 'services/iap/store_purchase_service.dart';
+import 'services/audio/sound_service.dart';
+import 'services/notifications/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,16 +35,22 @@ Future<void> main() async {
       await rootBundle.loadString('assets/config/balance.json'));
   final prefs = await SharedPreferences.getInstance();
 
+  final notifications = kIsWeb ? NoopNotificationService() : LocalNotificationService();
+  await notifications.initialize();
+
   final controller = GameController(
     config: config,
     saveRepository: JsonSaveRepository(SharedPrefsStore(prefs)),
     adService: _createAdService(),
     purchaseService: _createPurchaseService(config),
     analytics: LocalAnalyticsService(),
+    notifications: notifications,
   );
 
   await controller.start();
-  runApp(IdleOrbitApp(controller: controller));
+  final sound = FlameSoundService(enabled: () => controller.state.settings.sound);
+  runApp(IdleOrbitApp(controller: controller, sound: sound));
+  unawaited(sound.initialize());
 
   // Ads and store load in the background; the game never waits for them.
   unawaited(controller.adService.initialize());

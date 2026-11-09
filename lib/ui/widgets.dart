@@ -6,6 +6,7 @@ import '../app/theme.dart';
 import '../core/format.dart';
 import '../game/game_controller.dart';
 import '../game/model/resources.dart';
+import '../services/audio/sound_service.dart';
 
 /// Small resource icon + amount.
 class ResourceAmount extends StatelessWidget {
@@ -106,6 +107,7 @@ class CountBadge extends StatelessWidget {
 /// Shows a modal reward summary.
 Future<void> showRewardDialog(BuildContext context, String title, ResourceBag bag,
     {String? note}) {
+  playSfx(context, Sfx.reward);
   return showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
@@ -122,12 +124,16 @@ Future<void> showRewardDialog(BuildContext context, String title, ResourceBag ba
   );
 }
 
-/// Light haptic feedback, respecting the player's setting.
+/// Haptic + sound feedback for a successful purchase/upgrade tap,
+/// respecting the player's settings.
 void tapFeedback(BuildContext context) {
   if (context.read<GameController>().state.settings.haptics) {
     HapticFeedback.lightImpact();
   }
+  playSfx(context, Sfx.upgrade);
 }
+
+void playSfx(BuildContext context, Sfx sfx) => context.read<SoundService>().play(sfx);
 
 void showMessage(BuildContext context, String text, {bool error = false}) {
   ScaffoldMessenger.of(context)

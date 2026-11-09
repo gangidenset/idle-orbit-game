@@ -8,7 +8,9 @@ import 'package:idle_orbit/game/model/game_state.dart';
 import 'package:idle_orbit/game/model/resources.dart';
 import 'package:idle_orbit/services/ads/ad_service.dart';
 import 'package:idle_orbit/services/analytics/analytics_service.dart';
+import 'package:idle_orbit/game/engine/notification_planner.dart';
 import 'package:idle_orbit/services/iap/purchase_service.dart';
+import 'package:idle_orbit/services/notifications/notification_service.dart';
 
 import '../helpers.dart';
 
@@ -53,8 +55,26 @@ class FakeStore implements PurchaseService {
   void dispose() {}
 }
 
+class FakeNotifications implements NotificationService {
+  bool grant = true;
+  List<PlannedReminder> scheduled = [];
+  int cancels = 0;
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<bool> requestPermission() async => grant;
+  @override
+  Future<void> schedule(List<PlannedReminder> r) async => scheduled = r;
+  @override
+  Future<void> cancelAll() async {
+    cancels++;
+    scheduled = [];
+  }
+}
+
 void main() {
   late FakeClock clock;
+  late FakeNotifications notif;
   late MemoryStore store;
   late ScriptedAds ads;
   late FakeStore iap;
@@ -65,6 +85,7 @@ void main() {
         adService: ads,
         purchaseService: iap,
         analytics: LocalAnalyticsService(),
+        notifications: notif,
         clock: clock,
       );
 
@@ -73,6 +94,7 @@ void main() {
     store = MemoryStore();
     ads = ScriptedAds();
     iap = FakeStore();
+    notif = FakeNotifications();
   });
 
   test('new game starts, ticks, and saves', () async {
@@ -175,6 +197,38 @@ void main() {
     await c.start();
     expect(c.state.stat(Metric.sessions), 1);
     expect(c.state.daily.missionIds, isNotEmpty);
+    c.dispose();
+  });
+
+  test('first offline claim asks once; reminders scheduled on pause, cleared on resume',
+      () async {
+    final c1 = make();
+    await c1.start();
+    c1.onPaused();
+    c1.dispose();
+    await Future<void>.delayed(Duration.zero);
+    expect(notif.scheduled, isEmpty, reason: 'off until opted in');
+
+    clock.advance(const Duration(hours: 1));
+    final c = make();
+    await c.start();
+    final events = <GameEvent>[];
+    final sub = c.events.listen(events.add);
+    await c.claimOfflineReward(withAd: false);
+    await Future<void>.delayed(Duration.zero);
+    expect(events.whereType<NotificationPromptEvent>(), hasLength(1));
+    expect(c.state.settings.notificationPromptShown, isTrue);
+
+    expect(await c.setNotifications(true), isTrue);
+    c.onPaused();
+    expect(notif.scheduled.map((r) => r.kind), contains(ReminderKind.offlineCapReached));
+    c.onResumed();
+    expect(notif.scheduled, isEmpty);
+
+    notif.grant = false;
+    await c.setNotifications(false);
+    expect(await c.setNotifications(true), isFalse, reason: 'denied permission keeps it off');
+    await sub.cancel();
     c.dispose();
   });
 }

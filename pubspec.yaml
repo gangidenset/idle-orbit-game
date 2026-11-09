@@ -8,19 +8,44 @@ environment:
 
 dependencies:
   flame: ^1.38.2
+  flame_audio: ^2.12.2
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^22.0.0
   google_mobile_ads: ^9.2.0
   in_app_purchase: ^3.3.1
   provider: ^6.1.5+1
   shared_preferences: ^2.5.6
+  timezone: ^0.11.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 flutter:
   uses-material-design: true
   assets:
     - assets/config/
+    - assets/audio/
+
+# Generated assets. Regenerate with:
+#   python3 tool/make_icon.py
+#   dart run flutter_launcher_icons
+#   dart run flutter_native_splash:create
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icon/icon.png
+  adaptive_icon_background: "#0A1430"
+  adaptive_icon_foreground: assets/icon/icon_foreground.png
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#070E22"
+  image: assets/icon/icon_foreground.png
+  android_12:
+    color: "#070E22"
+    image: assets/icon/icon_foreground.png

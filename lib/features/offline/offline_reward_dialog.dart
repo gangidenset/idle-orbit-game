@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app/theme.dart';
 import '../../core/format.dart';
 import '../../game/game_controller.dart';
+import '../../services/audio/sound_service.dart';
 import '../../ui/widgets.dart';
 
 /// Offline reward breakdown with an optional ad to double it.
@@ -32,7 +33,10 @@ class _OfflineRewardDialogState extends State<_OfflineRewardDialog> {
     if (!mounted) return;
     setState(() => _busy = false);
     // On ad failure the reward stays pending and the dialog stays open.
-    if (bag != null) Navigator.pop(context);
+    if (bag != null) {
+      if (!bag.isEmpty) playSfx(context, Sfx.reward);
+      Navigator.pop(context);
+    }
   }
 
   @override

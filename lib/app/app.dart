@@ -3,12 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../features/home/home_shell.dart';
 import '../game/game_controller.dart';
+import '../services/audio/sound_service.dart';
 import '../ui/widgets.dart';
 import 'theme.dart';
 
 class IdleOrbitApp extends StatefulWidget {
-  const IdleOrbitApp({super.key, required this.controller});
+  const IdleOrbitApp({super.key, required this.controller, this.sound = const SilentSoundService()});
   final GameController controller;
+  final SoundService sound;
 
   @override
   State<IdleOrbitApp> createState() => _IdleOrbitAppState();
@@ -47,6 +49,7 @@ class _IdleOrbitAppState extends State<IdleOrbitApp> with WidgetsBindingObserver
       providers: [
         ChangeNotifierProvider.value(value: widget.controller),
         ChangeNotifierProvider(create: (_) => BuyMode()),
+        Provider<SoundService>.value(value: widget.sound),
       ],
       child: MaterialApp(
         title: 'IDLE ORBIT',

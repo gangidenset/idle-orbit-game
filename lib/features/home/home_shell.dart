@@ -60,8 +60,30 @@ class _HomeShellState extends State<HomeShell> {
         showPlanetUnlocked(context, planet).then((_) {
           if (mounted) context.read<GameController>().maybeShowInterstitial('planet_unlock');
         });
+      case NotificationPromptEvent():
+        _askNotifications();
       case PurchaseGrantedEvent(:final product, :final restored):
         showMessage(context, restored ? '「${product.name}」を復元しました' : '「${product.name}」を購入しました。ありがとうございます！');
+    }
+  }
+
+  /// In-game explanation first; the OS prompt only follows a "yes".
+  Future<void> _askNotifications() async {
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: const Icon(Icons.notifications_active, color: OrbitColors.accent),
+        title: const Text('基地からのお知らせを受け取りますか？'),
+        content: const Text('保管庫が満杯になった時と、放置報酬が上限に達した時だけお知らせします。'
+            '\n（設定画面からいつでも変更できます）'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('今はしない')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('受け取る')),
+        ],
+      ),
+    );
+    if (yes == true && mounted) {
+      await context.read<GameController>().setNotifications(true);
     }
   }
 

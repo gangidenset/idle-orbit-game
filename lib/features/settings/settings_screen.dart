@@ -45,12 +45,24 @@ class SettingsScreen extends StatelessWidget {
                 onSelectionChanged: (v) => c.setAdFrequency(v.first),
               ),
             ),
-          const _Header('操作'),
+          const _Header('サウンド・操作'),
+          SwitchListTile(
+            title: const Text('効果音'),
+            value: s.settings.sound,
+            onChanged: c.setSound,
+          ),
           SwitchListTile(
             title: const Text('振動（ハプティクス）'),
             subtitle: const Text('ボタンを押したときに軽く振動します'),
             value: s.settings.haptics,
             onChanged: c.setHaptics,
+          ),
+          const _Header('通知'),
+          SwitchListTile(
+            title: const Text('基地からのお知らせ'),
+            subtitle: const Text('保管庫が満杯の時・放置報酬が上限に達した時のみ（最大2件）'),
+            value: s.settings.notifications,
+            onChanged: c.setNotifications,
           ),
           const _Header('プライバシー'),
           SwitchListTile(

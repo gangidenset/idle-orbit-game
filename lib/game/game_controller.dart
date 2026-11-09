@@ -9,8 +9,10 @@ import '../services/ads/ad_service.dart';
 import '../services/ads/interstitial_policy.dart';
 import '../services/analytics/analytics_service.dart';
 import '../services/iap/purchase_service.dart';
+import '../services/notifications/notification_service.dart';
 import 'config/balance_config.dart';
 import 'engine/game_engine.dart';
+import 'engine/notification_planner.dart';
 import 'engine/offline_calculator.dart';
 import 'engine/prestige_system.dart';
 import 'engine/progression_system.dart';
@@ -36,6 +38,9 @@ class OfflineRewardEvent extends GameEvent {
   final OfflineReward reward;
 }
 
+/// Ask the player (in-game, before the OS prompt) to enable reminders.
+class NotificationPromptEvent extends GameEvent {}
+
 class PurchaseGrantedEvent extends GameEvent {
   PurchaseGrantedEvent(this.product, {required this.restored});
   final ProductConfig product;
@@ -51,10 +56,13 @@ class GameController extends ChangeNotifier {
     required this.adService,
     required this.purchaseService,
     required this.analytics,
+    NotificationService? notifications,
     Clock? clock,
   })  : clock = clock ?? SystemClock(),
+        notifications = notifications ?? NoopNotificationService(),
         engine = GameEngine(config) {
     offline = OfflineCalculator(engine);
+    planner = NotificationPlanner(engine);
     prestigeSystem = PrestigeSystem(engine);
     progression = ProgressionSystem(engine);
   }
@@ -64,11 +72,13 @@ class GameController extends ChangeNotifier {
   final AdService adService;
   final PurchaseService purchaseService;
   final AnalyticsService analytics;
+  final NotificationService notifications;
   final Clock clock;
   final GameEngine engine;
   late final OfflineCalculator offline;
   late final PrestigeSystem prestigeSystem;
   late final ProgressionSystem progression;
+  late final NotificationPlanner planner;
   late InterstitialPolicy _interstitialPolicy;
 
   late GameState state;
@@ -136,11 +146,15 @@ class GameController extends ChangeNotifier {
     }
     _rollDaily();
     _startTicker();
+    unawaited(notifications.cancelAll()); // player is back
     _save();
   }
 
   void _endSession() {
     _stopTicker();
+    if (state.settings.notifications) {
+      unawaited(notifications.schedule(planner.plan(state, nowMs)));
+    }
     final now = nowMs;
     analytics.logEvent(AnalyticsEvents.sessionEnd,
         {'duration_s': ((now - _sessionStartMs) / 1000).round()});
@@ -338,6 +352,12 @@ class GameController extends ChangeNotifier {
     final bag = offline.claim(state, multiplier: mult);
     analytics.logEvent(AnalyticsEvents.offlineClaim,
         {'seconds': r.creditedSeconds, 'ad': withAd, 'capped': r.capped});
+    if (r.creditedSeconds > 0 &&
+        !state.settings.notificationPromptShown &&
+        !state.settings.notifications) {
+      state.settings.notificationPromptShown = true;
+      _emit(NotificationPromptEvent());
+    }
     _commit();
     return bag;
   }
@@ -517,6 +537,28 @@ class GameController extends ChangeNotifier {
   void setHaptics(bool v) {
     state.settings.haptics = v;
     _commit();
+  }
+
+  void setSound(bool v) {
+    state.settings.sound = v;
+    _commit();
+  }
+
+  /// Turning reminders on requests OS permission; stays off if denied.
+  Future<bool> setNotifications(bool v) async {
+    if (v) {
+      final granted = await notifications.requestPermission();
+      state.settings.notifications = granted;
+      if (!granted) {
+        _emit(MessageEvent('通知が許可されていません。端末の設定アプリから「IDLE ORBIT」の通知を許可してください。',
+            isError: true));
+      }
+    } else {
+      state.settings.notifications = false;
+      unawaited(notifications.cancelAll());
+    }
+    _commit();
+    return state.settings.notifications;
   }
 
   void setAnalyticsConsent(bool v) {

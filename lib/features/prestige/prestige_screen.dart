@@ -6,6 +6,7 @@ import '../../core/format.dart';
 import '../../game/engine/game_engine.dart';
 import '../../game/game_controller.dart';
 import '../../game/model/game_state.dart';
+import '../../services/audio/sound_service.dart';
 import '../../ui/widgets.dart';
 
 class PrestigeScreen extends StatelessWidget {
@@ -140,6 +141,7 @@ class PrestigeScreen extends StatelessWidget {
     if (ok != true) return;
     final got = c.doPrestige();
     if (got > 0 && context.mounted) {
+      playSfx(context, Sfx.warp);
       showMessage(context, 'ワープ完了！ +$got pt を獲得しました。永久強化に使いましょう。');
     }
   }

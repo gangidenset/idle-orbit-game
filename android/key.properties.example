@@ -1,0 +1,7 @@
+# Copy to android/key.properties (git-ignored) for Play Store release builds.
+# Create the upload key once with:
+#   keytool -genkey -v -keystore ~/idle-orbit-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+storeFile=/absolute/path/to/idle-orbit-upload.jks
+storePassword=
+keyAlias=upload
+keyPassword=

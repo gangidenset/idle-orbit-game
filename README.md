@@ -22,6 +22,7 @@
 | 転生 | 「星系ワープ」。永久強化（生産・放置効率・ロボット性能・初期資源） |
 | 継続 | 7日周期ログインボーナス、デイリーミッション（日替わり3件）、実績（報酬は恒久生産ボーナス） |
 | 収益化 | リワード広告（任意）、インタースティシャル（頻度制限付き）、アプリ内課金4商品・購入復元 |
+| 演出・通知 | 効果音4種（設定でOFF可）、アプリアイコン・スプラッシュ、ローカル通知（保管庫満杯・放置上限到達、オプトイン制） |
 
 ## 開発環境
 
@@ -39,6 +40,28 @@ flutter analyze
 
 ```bash
 flutter test
+```
+
+Android リリースビルド（APK / Play 提出用 AAB）:
+
+```bash
+flutter build apk --release
+```
+
+```bash
+flutter build appbundle --release
+```
+
+Play に提出するには `android/key.properties` にアップロード鍵を設定してください（[android/key.properties.example](android/key.properties.example)）。未設定の場合はデバッグ鍵で署名され、端末テスト専用になります。
+
+アイコン・効果音の再生成（Python標準ライブラリ + Pillow。素材は自作のためライセンス問題なし）:
+
+```bash
+python3 tool/make_icon.py && dart run flutter_launcher_icons && dart run flutter_native_splash:create
+```
+
+```bash
+python3 tool/make_sounds.py
 ```
 
 バランス調整用シミュレーター（貪欲プレイの惑星解放タイミングを出力）:
@@ -103,6 +126,7 @@ flutter build appbundle --dart-define-from-file=.env.prod -P ADMOB_APP_ID=ca-app
 
 - **サーバー側レシート検証**: 未実装。MVPは端末内で付与（トランザクションIDで二重付与防止）。有料UA開始前に導入予定。
 - **分析**: `LocalAnalyticsService`（端末ログ出力のみ・通信なし）。Firebase Analytics は `AnalyticsService` を実装して差し替える。
-- **アプリアイコン・スプラッシュ・効果音**: 未作成（Flutterデフォルト）。
+- **BGM**: 未作成（効果音のみ）。
 - **プライバシーポリシー**: ストア公開前に作成・設定画面にリンク追加が必要。
-- **Android / iOS 実機ビルド**: 未検証（Phase 5）。
+- **Android**: リリースAPKのビルドは確認済み。実機での動作確認は未実施。
+- **iOS**: ビルド未検証（macOS + Xcode が必要）。

@@ -138,22 +138,37 @@ class Settings {
     this.adFrequency = 'standard',
     this.haptics = true,
     this.analyticsConsent = true,
+    this.sound = true,
+    this.notifications = false,
+    this.notificationPromptShown = false,
   });
 
   String adFrequency;
   bool haptics;
   bool analyticsConsent;
+  bool sound;
+
+  /// Off until the player opts in (OS permission granted).
+  bool notifications;
+  bool notificationPromptShown;
 
   Map<String, dynamic> toJson() => {
         'adFrequency': adFrequency,
         'haptics': haptics,
         'analyticsConsent': analyticsConsent,
+        'sound': sound,
+        'notifications': notifications,
+        'notificationPromptShown': notificationPromptShown,
       };
 
+  // New fields default sensibly, so v1 saves load without a migration.
   factory Settings.fromJson(Map<String, dynamic> j) => Settings(
         adFrequency: j['adFrequency'] as String? ?? 'standard',
         haptics: j['haptics'] as bool? ?? true,
         analyticsConsent: j['analyticsConsent'] as bool? ?? true,
+        sound: j['sound'] as bool? ?? true,
+        notifications: j['notifications'] as bool? ?? false,
+        notificationPromptShown: j['notificationPromptShown'] as bool? ?? false,
       );
 }
 

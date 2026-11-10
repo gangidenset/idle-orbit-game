@@ -215,7 +215,7 @@
       "color": "#F26B3A",
       "permanentMultiplier": 2.5,
       "activeBonus": { "alloy": 2.0 },
-      "unlockCost": { "alloy": 1.0e8, "research": 1.0e7 }
+      "unlockCost": { "alloy": 1.0e9, "research": 1.0e8 }
     },
     {
       "id": "unknown",
@@ -224,7 +224,7 @@
       "color": "#B07CFF",
       "permanentMultiplier": 3.0,
       "activeBonus": { "research": 2.0 },
-      "unlockCost": { "alloy": 5.0e10, "research": 5.0e9 }
+      "unlockCost": { "alloy": 3.0e14, "research": 3.0e13 }
     }
   ],
 
@@ -289,8 +289,9 @@
     "name": "星系ワープ",
     "requiredPlanet": "dunebell",
     "metric": "runAlloy",
-    "pointsDivisor": 2000,
-    "pointsExponent": 0.5,
+    "pointsDivisor": 200,
+    "pointsExponent": 0.33,
+    "productionPerEarnedPoint": 0.01,
     "upgrades": [
       {
         "id": "pp_production",

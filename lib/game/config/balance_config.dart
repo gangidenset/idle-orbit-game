@@ -240,6 +240,7 @@ class PrestigeConfig {
         metric = j['metric'] as String? ?? 'runAlloy',
         pointsDivisor = _d(j['pointsDivisor'], 1000),
         pointsExponent = _d(j['pointsExponent'], 0.5),
+        productionPerEarnedPoint = _d(j['productionPerEarnedPoint']),
         upgrades = _l(j['upgrades'])
             .map((e) => UpgradeConfig.fromJson(e, costKey: 'prestige'))
             .toList();
@@ -249,6 +250,9 @@ class PrestigeConfig {
   final String metric;
   final double pointsDivisor;
   final double pointsExponent;
+
+  /// Passive production bonus per warp point ever earned (spent or not).
+  final double productionPerEarnedPoint;
   final List<UpgradeConfig> upgrades;
 }
 

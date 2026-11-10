@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:idle_orbit/game/engine/game_engine.dart';
 import 'package:idle_orbit/game/engine/prestige_system.dart';
@@ -14,10 +16,15 @@ void main() {
   final prog = ProgressionSystem(engine);
 
   group('prestige', () {
+    const runAlloy = 1e6;
+    final expectedPts = math
+        .pow(runAlloy / config.prestige.pointsDivisor, config.prestige.pointsExponent)
+        .floor();
+
     GameState ready() {
       final s = engine.newGame(t0)
         ..unlockedPlanets.addAll(['glacies', 'dunebell'])
-        ..runStats[Metric.runAlloy] = 2000 * 100 // => 10 points
+        ..runStats[Metric.runAlloy] = runAlloy
         ..facilities['ore_mine'] = 50
         ..research['drill_tech'] = 3
         ..robots['miner_bot'] = 5
@@ -34,9 +41,11 @@ void main() {
 
     test('resets run, keeps meta, awards points', () {
       final s = ready();
-      expect(prestige.pointsAvailable(s), 10);
-      expect(prestige.prestige(s, t0), 10);
-      expect(s.prestigePoints, 10);
+      expect(expectedPts, greaterThan(1));
+      expect(prestige.pointsAvailable(s), expectedPts);
+      expect(prestige.prestige(s, t0), expectedPts);
+      expect(s.prestigePoints, expectedPts);
+      expect(s.stat(Metric.prestigePointsEarned), expectedPts);
       expect(s.facilityLevel('ore_mine'), 1);
       expect(s.researchLevel('drill_tech'), 0);
       expect(s.robotLevel('miner_bot'), 0);
@@ -53,12 +62,23 @@ void main() {
       final before = engine.modifiers(s).production[ResourceType.ore]!;
       expect(prestige.buyUpgrade(s, 'pp_production'), isTrue);
       expect(engine.modifiers(s).production[ResourceType.ore]!, closeTo(before * 1.25, 1e-9));
+      // Spending points must not reduce the passive earned-points bonus.
+      expect(engine.earnedPointsBonus(s),
+          closeTo(expectedPts * config.prestige.productionPerEarnedPoint, 1e-9));
       expect(prestige.buyUpgrade(s, 'pp_start'), isTrue);
-      s.runStats[Metric.runAlloy] = 2000;
+      s.runStats[Metric.runAlloy] = runAlloy;
       s.unlockedPlanets.addAll(['glacies', 'dunebell']);
       prestige.prestige(s, t0);
       expect(s.resources[ResourceType.alloy], closeTo(50, 1e-9));
     });
+  });
+
+  test('earned warp points give a passive production bonus', () {
+    final s = engine.newGame(t0);
+    final before = engine.modifiers(s).production[ResourceType.ore]!;
+    s.stats[Metric.prestigePointsEarned] = 50;
+    expect(engine.modifiers(s).production[ResourceType.ore]!,
+        closeTo(before * (1 + 50 * config.prestige.productionPerEarnedPoint), 1e-9));
   });
 
   group('daily', () {

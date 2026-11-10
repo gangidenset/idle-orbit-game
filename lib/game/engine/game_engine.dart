@@ -126,6 +126,10 @@ class GameEngine {
 
   bool hasPremium(GameState s) => s.has('premium');
 
+  /// Passive bonus from all warp points ever earned (e.g. 0.5 = +50%).
+  double earnedPointsBonus(GameState s) =>
+      s.stat(Metric.prestigePointsEarned) * config.prestige.productionPerEarnedPoint;
+
   Modifiers modifiers(GameState s) {
     final level = playerLevel(s);
     var planetPerm = 1.0;
@@ -135,6 +139,7 @@ class GameEngine {
     final active = config.planet(s.activePlanet);
     final premium = hasPremium(s) ? config.shop.premiumProductionBonus : 0.0;
     final common = planetPerm *
+        (1 + earnedPointsBonus(s)) *
         (1 + achievementBonus(s)) *
         (1 + (level - 1) * config.player.productionBonusPerLevel) *
         (1 + premium);

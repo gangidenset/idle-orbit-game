@@ -14,6 +14,7 @@ abstract final class Metric {
   static const researchCompleted = 'researchCompleted';
   static const planetsUnlocked = 'planetsUnlocked';
   static const prestigeCount = 'prestigeCount';
+  static const prestigePointsEarned = 'prestigePointsEarned';
   static const offlineClaims = 'offlineClaims';
   static const adsWatched = 'adsWatched';
   static const sessions = 'sessions';

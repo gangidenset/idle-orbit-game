@@ -33,7 +33,7 @@ class PrestigeSystem {
     final fresh = engine.newGame(nowMs);
 
     s.prestigePoints += gained;
-    s.addStat('prestigePointsEarned', gained.toDouble());
+    s.addStat(Metric.prestigePointsEarned, gained.toDouble());
     s.addStat(Metric.prestigeCount, 1);
 
     // Reset run data only. Meta data (prestige, stats, missions,

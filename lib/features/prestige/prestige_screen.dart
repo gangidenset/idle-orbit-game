@@ -22,6 +22,8 @@ class PrestigeScreen extends StatelessWidget {
     final pts = ps.pointsAvailable(s);
     final can = ps.canPrestige(s);
     final reqMet = s.unlockedPlanets.contains(cfg.requiredPlanet);
+    final earned = s.stat(Metric.prestigePointsEarned);
+    final perPoint = cfg.productionPerEarnedPoint;
 
     return Scaffold(
       appBar: AppBar(title: Text('転生（${cfg.name}）')),
@@ -50,7 +52,7 @@ class PrestigeScreen extends StatelessWidget {
                 ]),
                 const SizedBox(height: 6),
                 const _Bullets(title: '引き継がれるもの', color: OrbitColors.success, items: [
-                  'ワープポイントと強化、実績、ミッション、司令官レベル',
+                  'ワープポイント・強化・獲得ポイントの生産ボーナス、実績、ミッション、司令官レベル',
                   'ショップで購入した商品・特典ロボット',
                 ]),
               ]),
@@ -70,6 +72,17 @@ class PrestigeScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text('この星系での合金生産量 ${fmt(s.runStat(Metric.runAlloy))} に応じて増加',
                     style: const TextStyle(fontSize: 11, color: OrbitColors.textDim)),
+                if (perPoint > 0) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    '獲得済み ${fmt(earned)} pt → 全生産 +${fmtPercent(earned * perPoint)}'
+                    '${pts > 0 ? '（ワープ後 +${fmtPercent((earned + pts) * perPoint)}）' : ''}',
+                    style: const TextStyle(fontSize: 13, color: OrbitColors.success),
+                  ),
+                  Text('ポイントは使っても、獲得した量に応じた生産ボーナス（1ptにつき+${fmtPercent(perPoint)}）が永久に残ります',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 11, color: OrbitColors.textDim)),
+                ],
                 const SizedBox(height: 10),
                 if (!reqMet)
                   Text('解放条件：${req.name} の開拓', style: const TextStyle(color: OrbitColors.danger)),

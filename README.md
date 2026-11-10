@@ -60,7 +60,9 @@ Play に提出するには `android/key.properties` にアップロード鍵を�
 tool/build_web.sh
 ```
 
-`build/web_publish/` に公開用のファイル一式ができます。外部サイトへの通信なしで動くよう、描画エンジン（CanvasKit）と日本語フォント（Noto Sans JP のサブセット、[tool/make_web_font.py](tool/make_web_font.py)）を同梱しています。
+`build/web_publish/` に公開用のファイル一式ができます。
+
+**GitHub Pages での自動公開**: 既定ブランチへ push すると、GitHub Actions（[.github/workflows/ci.yml](.github/workflows/ci.yml)）がテストを通した後にブラウザ版をビルドし、`https://<ユーザー名>.github.io/idle-orbit-game/` に公開します。初回のみ、リポジトリの Settings → Pages → Source を「GitHub Actions」にしてください。外部サイトへの通信なしで動くよう、描画エンジン（CanvasKit）と日本語フォント（Noto Sans JP のサブセット、[tool/make_web_font.py](tool/make_web_font.py)）を同梱しています。
 
 アイコン・効果音の再生成（Python標準ライブラリ + Pillow。素材は自作のためライセンス問題なし）:
 

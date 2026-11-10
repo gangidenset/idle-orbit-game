@@ -3,9 +3,10 @@
 # page needs. The hosting sandbox blocks requests to other sites, so the
 # rendering engine (CanvasKit) and fonts are bundled locally.
 # Usage: tool/build_web.sh
+#   BASE_HREF=/idle-orbit-game/ tool/build_web.sh   # when served under a sub-path (GitHub Pages)
 set -e
 cd "$(dirname "$0")/.."
-flutter build web --release --no-web-resources-cdn
+flutter build web --release --no-web-resources-cdn --base-href "${BASE_HREF:-/}"
 OUT=build/web_publish
 rm -rf "$OUT" && mkdir -p "$OUT"
 cd build/web

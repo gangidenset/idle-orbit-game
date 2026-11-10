@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../core/logger.dart';
+import 'theme.dart' show webFontFamily;
 
 /// Must match IdleOrbitApplication.CRASH_FILE on Android.
 const _nativeCrashFile = 'last_native_crash.txt';
@@ -41,7 +42,10 @@ class StartupErrorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          useMaterial3: true,
+          fontFamily: kIsWeb ? webFontFamily : null),
       home: Scaffold(
         backgroundColor: const Color(0xFF070E22),
         body: SafeArea(

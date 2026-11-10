@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../game/model/resources.dart';
@@ -41,6 +42,8 @@ abstract final class OrbitIcons {
       };
 }
 
+const webFontFamily = 'NotoSansJP';
+
 ThemeData buildTheme() {
   final scheme = ColorScheme.fromSeed(
     seedColor: OrbitColors.primary,
@@ -55,6 +58,8 @@ ThemeData buildTheme() {
   );
   return ThemeData(
     useMaterial3: true,
+    // Mobile uses the system's Japanese font; web bundles its own.
+    fontFamily: kIsWeb ? webFontFamily : null,
     colorScheme: scheme,
     scaffoldBackgroundColor: OrbitColors.background,
     appBarTheme: const AppBarTheme(

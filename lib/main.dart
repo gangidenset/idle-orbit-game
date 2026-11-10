@@ -68,7 +68,17 @@ Future<void> _start() async {
       await rootBundle.loadString('assets/config/balance.json'));
 
   _step = 'storage';
-  final prefs = await SharedPreferences.getInstance();
+  // Browser storage can be blocked (private mode, sandboxed frames). The game
+  // still runs then; progress just isn't kept after closing.
+  KeyValueStore store;
+  var storageAvailable = true;
+  try {
+    store = SharedPrefsStore(await SharedPreferences.getInstance());
+  } catch (e, st) {
+    log.error('Storage unavailable; progress will not be saved', e, st);
+    store = MemoryStore();
+    storageAvailable = false;
+  }
 
   // Optional services must never block the game from starting.
   _step = 'notifications';
@@ -81,7 +91,7 @@ Future<void> _start() async {
   _step = 'game state';
   final controller = GameController(
     config: config,
-    saveRepository: JsonSaveRepository(SharedPrefsStore(prefs)),
+    saveRepository: JsonSaveRepository(store),
     adService: _createAdService(),
     purchaseService: _createPurchaseService(config),
     analytics: LocalAnalyticsService(),
@@ -92,6 +102,9 @@ Future<void> _start() async {
   _step = 'ui';
   if (_started) return; // watchdog already showed an error screen
   _started = true;
+  if (!storageAvailable) {
+    controller.notifyStorageUnavailable();
+  }
   final sound = FlameSoundService(enabled: () => controller.state.settings.sound);
   runApp(IdleOrbitApp(controller: controller, sound: sound));
   unawaited(sound.initialize());

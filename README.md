@@ -54,6 +54,14 @@ flutter build appbundle --release
 
 Play に提出するには `android/key.properties` にアップロード鍵を設定してください（[android/key.properties.example](android/key.properties.example)）。未設定の場合はデバッグ鍵で署名され、端末テスト専用になります。
 
+ブラウザ版（広告・課金・通知なし。iPhone / Android のブラウザで動作確認用）:
+
+```bash
+tool/build_web.sh
+```
+
+`build/web_publish/` に公開用のファイル一式ができます。外部サイトへの通信なしで動くよう、描画エンジン（CanvasKit）と日本語フォント（Noto Sans JP のサブセット、[tool/make_web_font.py](tool/make_web_font.py)）を同梱しています。
+
 アイコン・効果音の再生成（Python標準ライブラリ + Pillow。素材は自作のためライセンス問題なし）:
 
 ```bash

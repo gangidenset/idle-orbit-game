@@ -32,6 +32,15 @@ flutter:
     - assets/config/
     - assets/audio/
 
+  # Subset Japanese font, used only by the web build (browsers can't fetch
+  # fallback fonts in the hosting sandbox). Regenerate: tool/make_web_font.py
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Subset-Regular.ttf
+        - asset: assets/fonts/NotoSansJP-Subset-Bold.ttf
+          weight: 700
+
 # Generated assets. Regenerate with:
 #   python3 tool/make_icon.py
 #   dart run flutter_launcher_icons

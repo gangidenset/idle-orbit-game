@@ -246,6 +246,13 @@ class GameController extends ChangeNotifier {
     await _save();
   }
 
+  /// Tells the player that progress can't be saved in this environment.
+  void notifyStorageUnavailable() {
+    Timer(const Duration(seconds: 1), () => _emit(MessageEvent(
+        'このブラウザではデータを保存できません。閉じると進行状況は失われます。',
+        isError: true)));
+  }
+
   /// Rebuilds listeners after an external service changed (e.g. store ready).
   void refresh() => notifyListeners();
 

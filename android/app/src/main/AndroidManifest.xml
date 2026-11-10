@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:label="IDLE ORBIT"
-        android:name="${applicationName}"
+        android:name=".IdleOrbitApplication"
         android:icon="@mipmap/ic_launcher">
         <!-- AdMob app id. Defaults to Google's public TEST id; the production
              id is injected at build time via -PADMOB_APP_ID (see README). -->

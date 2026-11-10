@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../app/diagnostics.dart';
 import '../../app/theme.dart';
 import '../../core/format.dart';
 import '../../game/game_controller.dart';
@@ -38,8 +39,13 @@ class _HomeShellState extends State<HomeShell> {
     final c = context.read<GameController>();
     _sub = c.events.listen(_onEvent);
     // Show a reward computed before the UI subscribed (cold start).
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (c.state.pendingOfflineReward != null) _showOffline();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final crash = pendingCrashReport;
+      if (crash != null) {
+        pendingCrashReport = null;
+        await showCrashReportDialog(context, crash);
+      }
+      if (mounted && c.state.pendingOfflineReward != null) _showOffline();
     });
   }
 

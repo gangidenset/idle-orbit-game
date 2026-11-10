@@ -60,6 +60,8 @@
         <activity
             android:name=".CrashReportActivity"
             android:exported="false"
+            android:process=":crash"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Material.NoActionBar" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

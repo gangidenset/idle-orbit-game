@@ -77,6 +77,14 @@ class ArtLibrary {
   }
 }
 
+/// Paint for drawing art images: always opaque, smooth downscaling.
+/// (A Paint's colour alpha multiplies drawImageRect, so shape paints whose
+/// colour was last set semi-transparent must never be reused for images.)
+final Paint _imagePaint = Paint()
+  ..color = const Color(0xFFFFFFFF)
+  ..filterQuality = FilterQuality.medium
+  ..isAntiAlias = true;
+
 /// The base on the current planet. Drawn with plain canvas calls (no
 /// per-frame allocations beyond paints' state) to stay cheap on low-end
 /// devices; the static starfield/nebula is rendered once per size.
@@ -179,7 +187,7 @@ class _Backdrop extends Component with HasGameReference<OrbitScene> {
     final size = Size(game.size.x, game.size.y);
     final bg = game.art['bg_${d.planetId}'];
     if (bg != null) {
-      _drawCover(canvas, bg, Offset.zero & size, _p);
+      _drawCover(canvas, bg, Offset.zero & size, _imagePaint);
     } else {
       if (_static == null || _builtFor != size || _builtPlanet != d.planetId) _build(size, d);
       canvas.drawPicture(_static!);
@@ -315,8 +323,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       canvas.drawImageRect(
           sprite,
           Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
-          Rect.fromCircle(center: c, radius: r),
-          _fill);
+          Rect.fromCircle(center: c, radius: r), _imagePaint);
       return;
     }
     _fill.shader = Gradient.radial(
@@ -369,7 +376,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       final h = 18.0 + s.tier * 7;
       final w = h * sprite.width / sprite.height;
       canvas.drawImageRect(sprite, Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
-          Rect.fromLTWH(-w / 2, -h + 2, w, h), _fill);
+          Rect.fromLTWH(-w / 2, -h + 2, w, h), _imagePaint);
       canvas.restore();
       return;
     }
@@ -485,7 +492,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     final sprite = game.art['deco_moon'];
     if (sprite != null) {
       canvas.drawImageRect(sprite, Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
-          Rect.fromCircle(center: pos, radius: mr), _fill);
+          Rect.fromCircle(center: pos, radius: mr), _imagePaint);
       return;
     }
     _fill.shader = Gradient.radial(pos.translate(-mr * 0.4, -mr * 0.4), mr * 1.6,
@@ -502,7 +509,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     final sprite = game.art['deco_station'];
     if (sprite != null) {
       canvas.drawImageRect(sprite, Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
-          Rect.fromCenter(center: pos, width: 44, height: 44), _fill);
+          Rect.fromCenter(center: pos, width: 44, height: 44), _imagePaint);
       return;
     }
     canvas.save();

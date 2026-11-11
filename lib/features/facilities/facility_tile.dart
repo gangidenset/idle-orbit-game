@@ -7,6 +7,7 @@ import '../../game/config/balance_config.dart';
 import '../../game/engine/game_engine.dart';
 import '../../game/game_controller.dart';
 import '../../game/model/resources.dart';
+import '../../ui/hold_repeat_button.dart';
 import '../../ui/widgets.dart';
 
 /// A facility row with level, output and an upgrade button that follows the
@@ -103,11 +104,13 @@ class FacilityTile extends StatelessWidget {
             ]),
           ),
           const SizedBox(width: 8),
-          FilledButton(
-            onPressed: canBuy
+          HoldRepeatButton(
+            // Each step re-reads the state, so MAX keeps buying what's
+            // affordable as resources change while the button is held.
+            onStep: canBuy
                 ? () {
-                    tapFeedback(context);
-                    c.upgradeFacility(id, count: n);
+                    final k = mode == 0 ? e.affordableFacilityLevels(c.state, id) : mode;
+                    return k > 0 && c.upgradeFacility(id, count: k) > 0;
                   }
                 : null,
             child: Column(mainAxisSize: MainAxisSize.min, children: [

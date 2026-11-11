@@ -7,6 +7,7 @@ import '../../game/engine/game_engine.dart';
 import '../../game/game_controller.dart';
 import '../../game/model/game_state.dart';
 import '../../services/audio/sound_service.dart';
+import '../../ui/hold_repeat_button.dart';
 import '../../ui/widgets.dart';
 
 class PrestigeScreen extends StatelessWidget {
@@ -121,12 +122,9 @@ class PrestigeScreen extends StatelessWidget {
                                       : OrbitColors.danger)),
                       ]),
                     ),
-                    FilledButton(
-                      onPressed: ps.upgradeBlock(s, u.id) == UpgradeBlock.none
-                          ? () {
-                              tapFeedback(context);
-                              c.buyPrestigeUpgrade(u.id);
-                            }
+                    HoldRepeatButton(
+                      onStep: ps.upgradeBlock(s, u.id) == UpgradeBlock.none
+                          ? () => c.buyPrestigeUpgrade(u.id)
                           : null,
                       child: Text(ps.upgradeBlock(s, u.id) == UpgradeBlock.maxLevel ? 'MAX' : '強化'),
                     ),

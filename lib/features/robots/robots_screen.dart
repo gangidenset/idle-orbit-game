@@ -6,6 +6,7 @@ import '../../core/format.dart';
 import '../../game/config/balance_config.dart';
 import '../../game/engine/game_engine.dart';
 import '../../game/game_controller.dart';
+import '../../ui/hold_repeat_button.dart';
 import '../../ui/widgets.dart';
 import '../facilities/facility_tile.dart';
 
@@ -119,13 +120,8 @@ class _RobotCard extends StatelessWidget {
               ]),
             ),
             const SizedBox(width: 8),
-            FilledButton(
-              onPressed: block == UpgradeBlock.none
-                  ? () {
-                      tapFeedback(context);
-                      c.upgradeRobot(robot.id);
-                    }
-                  : null,
+            HoldRepeatButton(
+              onStep: block == UpgradeBlock.none ? () => c.upgradeRobot(robot.id) : null,
               child: Text(block == UpgradeBlock.maxLevel
                   ? 'MAX'
                   : locked

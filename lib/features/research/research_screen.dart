@@ -6,6 +6,7 @@ import '../../core/format.dart';
 import '../../game/engine/game_engine.dart';
 import '../../game/game_controller.dart';
 import '../../game/model/resources.dart';
+import '../../ui/hold_repeat_button.dart';
 import '../../ui/widgets.dart';
 
 class ResearchScreen extends StatelessWidget {
@@ -83,13 +84,8 @@ class ResearchScreen extends StatelessWidget {
                       ]),
                     ),
                     const SizedBox(width: 8),
-                    FilledButton(
-                      onPressed: block == UpgradeBlock.none
-                          ? () {
-                              tapFeedback(context);
-                              c.doResearch(n.id);
-                            }
-                          : null,
+                    HoldRepeatButton(
+                      onStep: block == UpgradeBlock.none ? () => c.doResearch(n.id) : null,
                       child: Text(block == UpgradeBlock.maxLevel ? '完了' : '研究'),
                     ),
                   ]),

@@ -233,6 +233,8 @@ class GameController extends ChangeNotifier {
   }
 
   Future<void> _save() async {
+    _saveTimer?.cancel();
+    _saveTimer = null;
     try {
       await saveRepository.save(state);
     } catch (e, st) {
@@ -261,10 +263,22 @@ class GameController extends ChangeNotifier {
   }
 
   /// Applies a state change, refreshes caches, notifies and saves.
+  /// Saves are debounced so bursts (e.g. holding an upgrade button) write
+  /// once; leaving the app still saves immediately.
   void _commit({bool save = true}) {
     _refreshCache();
     notifyListeners();
-    if (save) _save();
+    if (save) _saveSoon();
+  }
+
+  Timer? _saveTimer;
+
+  void _saveSoon() {
+    _saveTimer?.cancel();
+    _saveTimer = Timer(const Duration(milliseconds: 800), () {
+      _saveTimer = null;
+      _save();
+    });
   }
 
   // ------------------------------------------------------------- gameplay
@@ -274,7 +288,7 @@ class GameController extends ChangeNotifier {
     if (n > 0) {
       analytics.logEvent(AnalyticsEvents.facilityUpgrade,
           {'facility': id, 'level': state.facilityLevel(id), 'count': n});
-      _commit(save: false);
+      _commit();
     }
     return n;
   }
@@ -590,6 +604,7 @@ class GameController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _saveTimer?.cancel();
     _stopTicker();
     _purchaseSub?.cancel();
     _events.close();

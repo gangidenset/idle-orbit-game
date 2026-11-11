@@ -56,11 +56,20 @@ class SceneData {
 ///   assets/art/deco_{decorationId}.png      decoration sprite
 /// ```
 class ArtLibrary {
+  ArtLibrary._();
+
+  /// Shared across scenes (main screen and the full-screen base view), so
+  /// images are decoded once per app run.
+  static final ArtLibrary instance = ArtLibrary._();
+
   final Map<String, Image> _images = {};
+  Future<void>? _loading;
 
   Image? operator [](String name) => _images[name];
 
-  Future<void> load() async {
+  Future<void> load() => _loading ??= _load();
+
+  Future<void> _load() async {
     try {
       final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
       for (final path in manifest.listAssets()) {
@@ -89,10 +98,21 @@ final Paint _imagePaint = Paint()
 /// per-frame allocations beyond paints' state) to stay cheap on low-end
 /// devices; the static starfield/nebula is rendered once per size.
 class OrbitScene extends FlameGame {
-  OrbitScene(this.data);
+  OrbitScene(this.data, {this.planetCenterY = 0.66, this.planetRadius = 0.27});
 
   final SceneData Function() data;
-  final ArtLibrary art = ArtLibrary();
+
+  /// Planet centre as a fraction of the scene height.
+  final double planetCenterY;
+
+  /// Planet radius as a fraction of the scene's shorter side.
+  final double planetRadius;
+
+  /// Where the planet is drawn for a scene of [size] (also used by the
+  /// full-screen view to aim its close-up zoom).
+  static (Offset, double) planetGeometry(Size size, {double centerY = 0.66, double radius = 0.27}) =>
+      (Offset(size.width / 2, size.height * centerY), math.min(size.width, size.height) * radius);
+  ArtLibrary get art => ArtLibrary.instance;
 
   @override
   Color backgroundColor() => const Color(0xFF050A1A);
@@ -262,8 +282,8 @@ class _Base extends Component with HasGameReference<OrbitScene> {
   void render(Canvas canvas) {
     final d = game.data();
     final size = game.size;
-    final center = Offset(size.x / 2, size.y * 0.66);
-    final r = math.min(size.x, size.y) * 0.27;
+    final (center, r) = OrbitScene.planetGeometry(Size(size.x, size.y),
+        centerY: game.planetCenterY, radius: game.planetRadius);
     final now = DateTime.now().millisecondsSinceEpoch;
     final has = d.decorations.contains;
 

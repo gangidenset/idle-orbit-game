@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +6,10 @@ import '../../app/theme.dart';
 import '../../core/format.dart';
 import '../../flame/orbit_scene.dart';
 import '../../game/game_controller.dart';
-import '../../game/model/resources.dart';
 import '../../ui/widgets.dart';
 import '../facilities/facility_tile.dart';
+import 'base_view_screen.dart';
+import 'scene_data.dart';
 
 /// Main screen: the planet scene, boost/free reward actions, the next goal
 /// and quick facility upgrades.
@@ -29,32 +28,7 @@ class _BaseScreenState extends State<BaseScreen> {
   void initState() {
     super.initState();
     final c = context.read<GameController>();
-    _scene = OrbitScene(() {
-      final s = c.state;
-      final hired = c.config.robots.where((r) => s.robotLevel(r.id) > 0 && c.engine.isRobotUnlocked(s, r));
-      final normal = hired.where((r) => !r.special);
-      final special = hired.where((r) => r.special);
-      final levels = normal.fold<int>(0, (a, r) => a + s.robotLevel(r.id));
-      return SceneData(
-        planetId: s.activePlanet,
-        planetColor: Color(c.config.planet(s.activePlanet).colorValue),
-        structures: [
-          for (final f in c.config.facilities)
-            StructureData(
-              id: f.id,
-              tier: c.visuals.tierFor(s.facilityLevel(f.id)),
-              color: OrbitColors.facility(f.icon),
-              evolvedAtMs: c.evolvedAtMs[f.id],
-            ),
-        ],
-        decorations: {for (final d in c.visuals.activeDecorations(s)) d.id},
-        // One drone per robot type plus one per 15 levels, capped for clarity.
-        drones: math.min(12, normal.length + levels ~/ 15),
-        specialDrones: special.length,
-        boosted: c.engine.boostMultiplier(s, c.nowMs) > 1,
-        oreRate: c.snap.gross[ResourceType.ore],
-      );
-    });
+    _scene = OrbitScene(() => buildSceneData(c));
   }
 
   @override
@@ -70,7 +44,36 @@ class _BaseScreenState extends State<BaseScreen> {
         child: SizedBox(
           height: sceneHeight,
           child: Stack(children: [
-            Positioned.fill(child: RepaintBoundary(child: GameWidget(game: _scene))),
+            Positioned.fill(
+              child: Semantics(
+                button: true,
+                label: '基地を拡大して見る',
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => openBaseView(context),
+                  child: RepaintBoundary(child: GameWidget(game: _scene)),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 10,
+              bottom: 8,
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: OrbitColors.surface.withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: OrbitColors.outline),
+                  ),
+                  child: const Row(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(Icons.zoom_in, size: 14, color: OrbitColors.textDim),
+                    SizedBox(width: 3),
+                    Text('タップで拡大', style: TextStyle(fontSize: 11, color: OrbitColors.textDim)),
+                  ]),
+                ),
+              ),
+            ),
             Positioned(
               left: 12,
               top: 8,

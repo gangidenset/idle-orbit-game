@@ -31,6 +31,8 @@ flutter:
   assets:
     - assets/config/
     - assets/audio/
+    # Optional art that replaces procedural drawing (see docs/ART.md).
+    - assets/art/
 
   # Subset Japanese font, used only by the web build (browsers can't fetch
   # fallback fonts in the hosting sandbox). Regenerate: tool/make_web_font.py

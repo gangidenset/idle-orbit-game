@@ -34,7 +34,21 @@ class FacilityTile extends StatelessWidget {
     final cost = n == 1 ? e.facilityCost(s, id, c.mods) : e.facilityCostMany(s, id, n);
     final canBuy = unlocked && s.resources.covers(cost);
     final isStorage = id == c.config.storage.facilityId;
-    final nextMs = e.nextMilestone(lvl);
+    final v = c.visuals;
+    final tier = v.tierFor(lvl);
+    final nextTierAt = v.nextTierLevel(lvl);
+    final tierLevels = c.config.visuals.tierLevels;
+    final tierStart = tier == 0 ? 0 : tierLevels[tier - 1];
+    final nextTierName = nextTierAt == null || facility.tierNames.isEmpty
+        ? null
+        : facility.tierNames[tier]; // tier is 0-based index of the next one
+    final nextBoost = nextTierAt == null
+        ? 1.0
+        : e.milestoneMultiplier(nextTierAt) / e.milestoneMultiplier(nextTierAt - 1);
+    final tierProgress = nextTierAt == null
+        ? 1.0
+        : ((lvl - tierStart) / (nextTierAt - tierStart)).clamp(0.0, 1.0);
+    final color = lvl > 0 ? OrbitColors.facility(facility.icon) : OrbitColors.textDim;
 
     final outputLine = isStorage
         ? '上限 ${[
@@ -59,21 +73,27 @@ class FacilityTile extends StatelessWidget {
               color: OrbitColors.surfaceHigh,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(OrbitIcons.facility(facility.icon),
-                color: lvl > 0 ? OrbitColors.primary : OrbitColors.textDim),
+            child: Icon(OrbitIcons.facility(facility.icon), color: color),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 Flexible(
-                  child: Text(facility.name,
+                  child: Text(lvl > 0 ? v.tierName(facility, lvl) : facility.name,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(width: 6),
                 Text('Lv.$lvl', style: const TextStyle(color: OrbitColors.accent, fontSize: 13)),
+                if (tier > 0) ...[
+                  const SizedBox(width: 4),
+                  _TierStars(tier: tier, max: v.maxTier(), color: color),
+                ],
               ]),
+              if (lvl > 0 && v.tierName(facility, lvl) != facility.name)
+                Text(facility.name,
+                    style: const TextStyle(fontSize: 10, color: OrbitColors.textDim)),
               const SizedBox(height: 2),
               Text(outputLine,
                   maxLines: 2,
@@ -87,13 +107,27 @@ class FacilityTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(facility.description,
                     style: const TextStyle(fontSize: 11, color: OrbitColors.textDim)),
-                if (!isStorage && nextMs != null)
-                  Text('Lv.$nextMs で生産量アップ（マイルストーン）',
-                      style: const TextStyle(fontSize: 11, color: OrbitColors.accent)),
+
                 if (facility.isConverter)
                   Text(
                       '消費：${facility.consumes.nonZero.map((x) => '${x.key.label} ${fmt(x.value * (lvl == 0 ? 1 : lvl))}/秒').join(' ')}',
                       style: const TextStyle(fontSize: 11, color: OrbitColors.textDim)),
+              ],
+              if (lvl > 0 && nextTierAt != null) ...[
+                const SizedBox(height: 4),
+                LinearProgressIndicator(
+                  value: tierProgress,
+                  minHeight: 3,
+                  borderRadius: BorderRadius.circular(2),
+                  backgroundColor: OrbitColors.outline,
+                  color: color,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Lv.$nextTierAt で【${nextTierName ?? '進化'}】に進化'
+                  '${!isStorage && nextBoost > 1 ? '・生産×${fmt(nextBoost)}' : ''}',
+                  style: const TextStyle(fontSize: 11, color: OrbitColors.accent),
+                ),
               ],
               const SizedBox(height: 4),
               if (unlocked) CostView(cost, s.resources, size: 12),
@@ -131,3 +165,16 @@ String blockLabel(UpgradeBlock b) => switch (b) {
       UpgradeBlock.locked => '未解放',
       UpgradeBlock.insufficient => '資源不足',
     };
+
+class _TierStars extends StatelessWidget {
+  const _TierStars({required this.tier, required this.max, required this.color});
+  final int tier;
+  final int max;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
+        for (var i = 0; i < max; i++)
+          Icon(Icons.star, size: 10, color: i < tier ? color : OrbitColors.outline),
+      ]);
+}

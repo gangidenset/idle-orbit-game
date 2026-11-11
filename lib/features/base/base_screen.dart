@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,14 +31,28 @@ class _BaseScreenState extends State<BaseScreen> {
     final c = context.read<GameController>();
     _scene = OrbitScene(() {
       final s = c.state;
+      final hired = c.config.robots.where((r) => s.robotLevel(r.id) > 0 && c.engine.isRobotUnlocked(s, r));
+      final normal = hired.where((r) => !r.special);
+      final special = hired.where((r) => r.special);
+      final levels = normal.fold<int>(0, (a, r) => a + s.robotLevel(r.id));
       return SceneData(
+        planetId: s.activePlanet,
         planetColor: Color(c.config.planet(s.activePlanet).colorValue),
-        facilityLevels: [for (final f in c.config.facilities) s.facilityLevel(f.id)],
-        robotCount: s.robots.values.where((l) => l > 0).length +
-            s.robots.values.fold<int>(0, (a, b) => a + b) ~/ 10,
+        structures: [
+          for (final f in c.config.facilities)
+            StructureData(
+              id: f.id,
+              tier: c.visuals.tierFor(s.facilityLevel(f.id)),
+              color: OrbitColors.facility(f.icon),
+              evolvedAtMs: c.evolvedAtMs[f.id],
+            ),
+        ],
+        decorations: {for (final d in c.visuals.activeDecorations(s)) d.id},
+        // One drone per robot type plus one per 15 levels, capped for clarity.
+        drones: math.min(12, normal.length + levels ~/ 15),
+        specialDrones: special.length,
         boosted: c.engine.boostMultiplier(s, c.nowMs) > 1,
         oreRate: c.snap.gross[ResourceType.ore],
-        premium: c.engine.hasPremium(s),
       );
     });
   }
@@ -47,7 +63,7 @@ class _BaseScreenState extends State<BaseScreen> {
     final s = c.state;
     final planet = c.config.planet(s.activePlanet);
     final level = c.engine.levelInfo(s);
-    final sceneHeight = (MediaQuery.sizeOf(context).height * 0.30).clamp(180.0, 320.0);
+    final sceneHeight = (MediaQuery.sizeOf(context).height * 0.34).clamp(200.0, 360.0);
 
     return CustomScrollView(slivers: [
       SliverToBoxAdapter(

@@ -16,6 +16,7 @@ import 'engine/notification_planner.dart';
 import 'engine/offline_calculator.dart';
 import 'engine/prestige_system.dart';
 import 'engine/progression_system.dart';
+import 'engine/visual_system.dart';
 import 'model/game_state.dart';
 import 'model/resources.dart';
 
@@ -36,6 +37,18 @@ class PlanetUnlockedEvent extends GameEvent {
 class OfflineRewardEvent extends GameEvent {
   OfflineRewardEvent(this.reward);
   final OfflineReward reward;
+}
+
+/// A facility reached a new visual tier.
+class FacilityEvolvedEvent extends GameEvent {
+  FacilityEvolvedEvent(this.evolution);
+  final Evolution evolution;
+}
+
+/// A new base decoration appeared.
+class DecorationUnlockedEvent extends GameEvent {
+  DecorationUnlockedEvent(this.decoration);
+  final DecorationConfig decoration;
 }
 
 /// Ask the player (in-game, before the OS prompt) to enable reminders.
@@ -63,6 +76,7 @@ class GameController extends ChangeNotifier {
         engine = GameEngine(config) {
     offline = OfflineCalculator(engine);
     planner = NotificationPlanner(engine);
+    visuals = VisualSystem(engine);
     prestigeSystem = PrestigeSystem(engine);
     progression = ProgressionSystem(engine);
   }
@@ -79,6 +93,11 @@ class GameController extends ChangeNotifier {
   late final PrestigeSystem prestigeSystem;
   late final ProgressionSystem progression;
   late final NotificationPlanner planner;
+  late final VisualSystem visuals;
+  BaseLook? _look;
+
+  /// Wall-clock ms when each facility last evolved (for the scene's flash).
+  final Map<String, int> evolvedAtMs = {};
   late InterstitialPolicy _interstitialPolicy;
 
   late GameState state;
@@ -121,6 +140,7 @@ class GameController extends ChangeNotifier {
     }
     analytics.setEnabled(state.settings.analyticsConsent);
     _refreshCache();
+    _look = visuals.look(state);
     _started = true;
 
     _purchaseSub = purchaseService.events.listen(_onPurchaseEvent);
@@ -262,11 +282,27 @@ class GameController extends ChangeNotifier {
     if (!_events.isClosed) _events.add(e);
   }
 
+  /// Emits evolution/decoration events for anything new since the last check.
+  void _checkLook() {
+    final now = visuals.look(state);
+    final before = _look;
+    _look = now;
+    if (before == null) return;
+    for (final e in visuals.evolutions(before, now)) {
+      evolvedAtMs[e.facility.id] = DateTime.now().millisecondsSinceEpoch;
+      _emit(FacilityEvolvedEvent(e));
+    }
+    for (final d in visuals.newDecorations(before, now)) {
+      _emit(DecorationUnlockedEvent(d));
+    }
+  }
+
   /// Applies a state change, refreshes caches, notifies and saves.
   /// Saves are debounced so bursts (e.g. holding an upgrade button) write
   /// once; leaving the app still saves immediately.
   void _commit({bool save = true}) {
     _refreshCache();
+    _checkLook();
     notifyListeners();
     if (save) _saveSoon();
   }
@@ -599,6 +635,7 @@ class GameController extends ChangeNotifier {
       ..settings = settings;
     if (state.has('starter_pack')) state.robots['pioneer_bot'] = 1;
     _rollDaily();
+    _look = visuals.look(state);
     _commit();
   }
 

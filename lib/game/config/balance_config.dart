@@ -133,7 +133,8 @@ class FacilityConfig with Levelled {
         consumes = ResourceBag.fromJson(_m(j['consumes'])),
         baseCost = ResourceBag.fromJson(_m(j['baseCost'])),
         costGrowth = _d(j['costGrowth'], 1.15),
-        requires = _m(j['requires']).map((k, v) => MapEntry(k, _i(v)));
+        requires = _m(j['requires']).map((k, v) => MapEntry(k, _i(v))),
+        tierNames = ((j['tierNames'] as List?) ?? const []).cast<String>();
 
   final String id;
   final String name;
@@ -149,6 +150,9 @@ class FacilityConfig with Levelled {
 
   /// Other facility id -> minimum level before this one can be built.
   final Map<String, int> requires;
+
+  /// Display name for each visual tier (see [VisualsConfig.tierLevels]).
+  final List<String> tierNames;
 
   bool get isConverter => !consumes.isEmpty;
 }
@@ -396,6 +400,30 @@ class ShopConfig {
   }
 }
 
+class DecorationConfig {
+  DecorationConfig.fromJson(Map<String, dynamic> j)
+      : id = j['id'] as String,
+        name = j['name'] as String,
+        description = j['description'] as String? ?? '',
+        metric = _m(j['condition'])['metric'] as String,
+        value = _d(_m(j['condition'])['value'], 1);
+  final String id;
+  final String name;
+  final String description;
+  final String metric;
+  final double value;
+}
+
+class VisualsConfig {
+  VisualsConfig.fromJson(Map<String, dynamic> j)
+      : tierLevels = ((j['tierLevels'] as List?) ?? const [1]).map((e) => _i(e)).toList(),
+        decorations = _l(j['decorations']).map(DecorationConfig.fromJson).toList();
+
+  /// Facility level at which each visual tier starts (ascending).
+  final List<int> tierLevels;
+  final List<DecorationConfig> decorations;
+}
+
 class BalanceConfig {
   BalanceConfig.fromJson(Map<String, dynamic> j)
       : configVersion = _i(j['configVersion'], 1),
@@ -404,6 +432,7 @@ class BalanceConfig {
         startingResources = ResourceBag.fromJson(_m(j['startingResources'])),
         offline = OfflineConfig.fromJson(_m(j['offline'])),
         player = PlayerConfig.fromJson(_m(j['player'])),
+        visuals = VisualsConfig.fromJson(_m(j['visuals'])),
         milestones = _l(j['milestones']).map(Milestone.fromJson).toList()
           ..sort((a, b) => a.level.compareTo(b.level)),
         storage = StorageConfig.fromJson(_m(j['storage'])),
@@ -438,6 +467,7 @@ class BalanceConfig {
   final ResourceBag startingResources;
   final OfflineConfig offline;
   final PlayerConfig player;
+  final VisualsConfig visuals;
   final List<Milestone> milestones;
   final StorageConfig storage;
   final List<FacilityConfig> facilities;
@@ -497,6 +527,12 @@ class BalanceConfig {
         throw FormatException('Robot ${r.id} unlocks on unknown planet $p');
       }
     }
+    for (final f in facilities) {
+      if (f.tierNames.isNotEmpty && f.tierNames.length != visuals.tierLevels.length) {
+        throw FormatException('Facility ${f.id} needs ${visuals.tierLevels.length} tierNames');
+      }
+    }
+    unique(visuals.decorations.map((d) => d.id), 'decoration');
     if (dailyMissionCount > missionPool.length) {
       throw const FormatException('dailyCount exceeds mission pool size');
     }

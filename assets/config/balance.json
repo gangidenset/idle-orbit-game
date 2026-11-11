@@ -23,6 +23,20 @@
     "productionBonusPerLevel": 0.01
   },
 
+  "visuals": {
+    "_comment": "Tier N starts at tierLevels[N-1]. Facilities show tierNames[N-1].",
+    "tierLevels": [1, 10, 25, 50, 100, 200],
+    "decorations": [
+      { "id": "city_lights", "name": "夜の街明かり", "description": "研究が進み、惑星の夜側に街の灯りがともる。", "condition": { "metric": "researchLevels", "value": 3 } },
+      { "id": "comm_array", "name": "通信アレイ", "description": "ロボットたちの通信網。", "condition": { "metric": "robotsHired", "value": 3 } },
+      { "id": "moon", "name": "衛星ルナ", "description": "惑星を周回する小さな月。", "condition": { "metric": "playerLevel", "value": 5 } },
+      { "id": "station", "name": "軌道ステーション", "description": "宇宙空間に浮かぶ司令部。", "condition": { "metric": "playerLevel", "value": 10 } },
+      { "id": "space_elevator", "name": "軌道エレベーター", "description": "地表と宇宙を結ぶ巨大な塔。", "condition": { "metric": "planetsUnlocked", "value": 3 } },
+      { "id": "warp_halo", "name": "ワープの光輪", "description": "星系ワープを経験した基地の証。", "condition": { "metric": "prestigeCount", "value": 1 } },
+      { "id": "aurora", "name": "オーロラ", "description": "プレミアムパック特典の特別な輝き。", "condition": { "metric": "premium", "value": 1 } }
+    ]
+  },
+
   "milestones": [
     { "level": 10, "multiplier": 2 },
     { "level": 25, "multiplier": 2 },
@@ -40,6 +54,7 @@
   "facilities": [
     {
       "id": "ore_mine",
+      "tierNames": ["採掘リグ", "採掘プラント", "深層掘削基地", "大陸掘削要塞", "惑星コア採掘場", "次元採掘ゲート"],
       "name": "鉱石採掘施設",
       "description": "地表から鉱石を自動で採掘する。",
       "icon": "ore",
@@ -52,6 +67,7 @@
     },
     {
       "id": "power_plant",
+      "tierNames": ["ソーラーパネル", "発電ステーション", "フュージョン炉", "恒星集光タワー", "ダイソン・アレイ", "星核リアクター"],
       "name": "エネルギー発電施設",
       "description": "恒星光からエネルギーを生み出す。",
       "icon": "energy",
@@ -64,6 +80,7 @@
     },
     {
       "id": "alloy_smelter",
+      "tierNames": ["小型炉", "精錬工場", "プラズマ溶鉱炉", "重合金コンビナート", "ナノ精錬プラント", "物質変換炉"],
       "name": "合金精錬施設",
       "description": "鉱石とエネルギーを合金に精錬する。",
       "icon": "alloy",
@@ -76,6 +93,7 @@
     },
     {
       "id": "research_lab",
+      "tierNames": ["観測小屋", "研究所", "量子ラボ", "星系アカデミー", "超知性コア", "宇宙図書館"],
       "name": "研究施設",
       "description": "エネルギーを消費して研究ポイントを生む。",
       "icon": "research",
@@ -88,6 +106,7 @@
     },
     {
       "id": "storage",
+      "tierNames": ["資材テント", "倉庫", "大型サイロ", "地下保管網", "圧縮貯蔵庫", "亜空間ストレージ"],
       "name": "資源保管施設",
       "description": "鉱石・エネルギー・合金の保管上限を増やす。",
       "icon": "storage",

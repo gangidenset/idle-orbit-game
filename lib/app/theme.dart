@@ -16,6 +16,16 @@ abstract final class OrbitColors {
   static const danger = Color(0xFFFF6B6B);
   static const textDim = Color(0xFF8C9BC4);
 
+  /// Accent per facility icon key (matches the structures in the scene).
+  static Color facility(String icon) => switch (icon) {
+        'ore' => const Color(0xFFD9B38C),
+        'energy' => const Color(0xFFFFD54F),
+        'alloy' => const Color(0xFF80DEEA),
+        'research' => const Color(0xFFCE93D8),
+        'storage' => const Color(0xFF90A4AE),
+        _ => primary,
+      };
+
   static Color resource(ResourceType r) => switch (r) {
         ResourceType.ore => const Color(0xFFB8A48C),
         ResourceType.energy => const Color(0xFFFFD54F),

@@ -8,6 +8,7 @@ enum Sfx {
   upgrade('upgrade.wav'),
   reward('reward.wav'),
   unlock('unlock.wav'),
+  evolve('evolve.wav'),
   warp('warp.wav');
 
   const Sfx(this.file);

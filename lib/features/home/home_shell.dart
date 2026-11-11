@@ -8,6 +8,8 @@ import '../../app/theme.dart';
 import '../../core/format.dart';
 import '../../game/game_controller.dart';
 import '../../game/model/resources.dart';
+import '../../services/audio/sound_service.dart';
+import '../../ui/celebration_banner.dart';
 import '../../ui/widgets.dart';
 import '../base/base_screen.dart';
 import '../facilities/facilities_screen.dart';
@@ -49,11 +51,27 @@ class _HomeShellState extends State<HomeShell> {
     });
   }
 
+  CelebrationBanners? _banners;
+  CelebrationBanners get banners =>
+      _banners ??= CelebrationBanners(Overlay.of(context, rootOverlay: true));
+
   @override
   void dispose() {
     _sub?.cancel();
+    _banners?.dispose();
     super.dispose();
   }
+
+  static IconData _decorationIcon(String id) => switch (id) {
+        'city_lights' => Icons.location_city,
+        'comm_array' => Icons.cell_tower,
+        'moon' => Icons.nightlight_round,
+        'station' => Icons.satellite_alt,
+        'space_elevator' => Icons.vertical_align_top,
+        'warp_halo' => Icons.blur_circular,
+        'aurora' => Icons.auto_awesome,
+        _ => Icons.star,
+      };
 
   void _onEvent(GameEvent e) {
     if (!mounted) return;
@@ -68,6 +86,27 @@ class _HomeShellState extends State<HomeShell> {
         });
       case NotificationPromptEvent():
         _askNotifications();
+      case FacilityEvolvedEvent(:final evolution):
+        final c = context.read<GameController>();
+        playSfx(context, Sfx.evolve);
+        banners.show(BannerItem(
+          icon: OrbitIcons.facility(evolution.facility.icon),
+          color: OrbitColors.facility(evolution.facility.icon),
+          label: '進化！',
+          title: evolution.name,
+          subtitle: '${evolution.facility.name}が進化しました',
+          stars: evolution.tier,
+          maxStars: c.visuals.maxTier(),
+        ));
+      case DecorationUnlockedEvent(:final decoration):
+        playSfx(context, Sfx.evolve);
+        banners.show(BannerItem(
+          icon: _decorationIcon(decoration.id),
+          color: OrbitColors.primary,
+          label: '基地に追加',
+          title: decoration.name,
+          subtitle: decoration.description,
+        ));
       case PurchaseGrantedEvent(:final product, :final restored):
         showMessage(context, restored ? '「${product.name}」を復元しました' : '「${product.name}」を購入しました。ありがとうございます！');
     }

@@ -56,4 +56,12 @@ for i in range(n):
     prev += a * (rnd.uniform(-1, 1) - prev)
     sweep.append(prev * math.sin(math.pi * t / 1.3))
 write('warp', mix((sweep, 0), (tone(110, 1.2, attack=0.3, decay=1.0), 0)), 0.5)
+# Evolution: quick rising sweep into a bright major chord (shorter than unlock)
+n = int(RATE * 0.25); sweep2 = []
+for i in range(n):
+    t = i / RATE; f = 400 + 1400 * (t / 0.25) ** 1.5
+    sweep2.append(math.sin(2 * math.pi * f * t) * (t / 0.25) * 0.5)
+chord = mix((tone(1046.5, 0.7, shape='bell', decay=0.6), 0), (tone(1318.5, 0.7, shape='bell', decay=0.6), 0.03),
+            (tone(1568.0, 0.8, shape='bell', decay=0.7, vib=0.003), 0.06))
+write('evolve', mix((sweep2, 0), (chord, 0.22)), 0.45)
 print('ok')

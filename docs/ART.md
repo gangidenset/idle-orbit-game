@@ -30,3 +30,4 @@
 - 惑星ID: `terra_nova` `glacies` `dunebell` `vulcara` `unknown`
 - 施設ID: `ore_mine` `power_plant` `alloy_smelter` `research_lab` `storage`
 - 全部で最大：背景5＋惑星5＋建物30＋装飾2 = 42枚。一部だけでも使える。
+- 画像AI用のプロンプト（フラット絵柄）: [ART_PROMPTS.md](ART_PROMPTS.md)

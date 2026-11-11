@@ -5,6 +5,7 @@ import 'package:idle_orbit/app/app.dart';
 import 'package:idle_orbit/core/clock.dart';
 import 'package:idle_orbit/data/save_repository.dart';
 import 'package:idle_orbit/features/base/base_view_screen.dart';
+import 'package:idle_orbit/flame/orbit_scene.dart';
 import 'package:idle_orbit/game/game_controller.dart';
 import 'package:idle_orbit/services/ads/ad_service.dart';
 import 'package:idle_orbit/services/analytics/analytics_service.dart';
@@ -57,14 +58,35 @@ void main() {
 
     await tester.drag(find.text('基地の成長'), const Offset(0, 900));
     await frames();
+
+    // One-finger horizontal drag turns the planet.
+    final scene = tester
+        .widgetList<GameWidget>(find.byWidgetPredicate((w) => w is GameWidget))
+        .map((w) => w.game)
+        .whereType<OrbitScene>()
+        .last;
+    expect(scene.yaw, 0);
+    await tester.dragFrom(const Offset(200, 300), const Offset(-150, 0));
+    await frames();
+    expect(scene.yaw, isNot(closeTo(0, 0.05)), reason: 'dragging spins the planet');
+
+    double zoom() => tester
+        .widget<Transform>(find.byKey(const ValueKey('base-view-transform')))
+        .transform
+        .getMaxScaleOnAxis();
+
     await tester.tap(find.text('基地をアップ'));
     await frames();
-    final viewer = tester.widget<InteractiveViewer>(find.byType(InteractiveViewer));
-    expect(viewer.transformationController!.value.getMaxScaleOnAxis(), greaterThanOrEqualTo(1.5),
-        reason: 'close-up zooms in');
+    // Flame's own loop doesn't run under the test clock; step it manually.
+    for (var i = 0; i < 120; i++) {
+      scene.update(1 / 60);
+    }
+    expect(zoom(), greaterThanOrEqualTo(1.5), reason: 'close-up zooms in');
+    expect(scene.yaw.abs() % (2 * 3.14159265), anyOf(lessThan(0.01), greaterThan(6.27)),
+        reason: 'close-up turns the planet back to the front');
     await tester.tap(find.text('全体'));
     await frames();
-    expect(viewer.transformationController!.value.getMaxScaleOnAxis(), closeTo(1, 0.01));
+    expect(zoom(), closeTo(1, 0.01));
 
     await tester.tap(find.byTooltip('閉じる'));
     await frames();

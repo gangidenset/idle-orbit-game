@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flame/game.dart' show GameWidget;
-import 'package:flutter/gestures.dart' show PointerDeviceKind;
+import 'package:flutter/gestures.dart' show PointerDeviceKind, PointerScrollEvent;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,6 +65,7 @@ class _BaseViewScreenState extends State<BaseViewScreen>
       () => buildSceneData(c),
       planetCenterY: _planetY,
       planetRadius: _planetR,
+      idleSpin: true,
     );
     _anim.addListener(() {
       final t = _tween;
@@ -89,8 +90,72 @@ class _BaseViewScreenState extends State<BaseViewScreen>
 
   void _showAll() => _animateTo(Matrix4.identity());
 
+  // ---- gestures: 1 finger turns the planet, 2 fingers zoom and pan.
+
+  int _pointers = 0;
+  double _lastScale = 1;
+
+  double get _currentScale => _zoom.value.getMaxScaleOnAxis();
+
+  /// Planet radius on screen, so a drag across the planet turns it about
+  /// as far as the finger moved along its surface.
+  double get _screenRadius {
+    final (_, r) = OrbitScene.planetGeometry(_viewport, centerY: _planetY, radius: _planetR);
+    return r * _currentScale;
+  }
+
+  void _onScaleStart(ScaleStartDetails d) {
+    _anim.stop();
+    _pointers = d.pointerCount;
+    _lastScale = 1;
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails d) {
+    _pointers = d.pointerCount;
+    if (d.pointerCount < 2) {
+      _scene.spinBy(d.focalPointDelta.dx / _screenRadius);
+      return;
+    }
+    final factor = d.scale / _lastScale;
+    _lastScale = d.scale;
+    _zoomAt(d.localFocalPoint, factor, pan: d.focalPointDelta);
+  }
+
+  void _onScaleEnd(ScaleEndDetails d) {
+    if (_pointers < 2) _scene.fling(d.velocity.pixelsPerSecond.dx / _screenRadius);
+  }
+
+  /// Zooms by [factor] keeping [focal] fixed, then pans; clamped to 1x-5x
+  /// and to the scene bounds.
+  void _zoomAt(Offset focal, double factor, {Offset pan = Offset.zero}) {
+    final current = _currentScale;
+    final next = (current * factor).clamp(1.0, 5.0);
+    final f = next / current;
+    final m = _zoom.value.clone();
+    // new = T(focal) * S(f) * T(-focal) * old, then pan.
+    final zoomed = Matrix4.identity()
+      ..translateByDouble(focal.dx + pan.dx, focal.dy + pan.dy, 0, 1)
+      ..scaleByDouble(f, f, 1, 1)
+      ..translateByDouble(-focal.dx, -focal.dy, 0, 1)
+      ..multiply(m);
+    _zoom.value = _clamp(zoomed);
+  }
+
+  Matrix4 _clamp(Matrix4 m) {
+    final s = m.getMaxScaleOnAxis();
+    if (s <= 1.0001) return Matrix4.identity();
+    final t = m.getTranslation();
+    final w = _viewport.width, h = _viewport.height;
+    final tx = t.x.clamp(w - w * s, 0.0);
+    final ty = t.y.clamp(h - h * s, 0.0);
+    return Matrix4.identity()
+      ..translateByDouble(tx, ty, 0, 1)
+      ..scaleByDouble(s, s, 1, 1);
+  }
+
   /// Zooms onto the buildings on top of the planet.
   void _closeUp() {
+    _scene.spinToFront();
     // Buildings sit on the top edge of the planet.
     final w = _viewport.width, h = _viewport.height;
     final (center, r) = OrbitScene.planetGeometry(
@@ -126,13 +191,32 @@ class _BaseViewScreenState extends State<BaseViewScreen>
             child: LayoutBuilder(
               builder: (context, box) {
                 _viewport = box.biggest;
-                return InteractiveViewer(
-                  transformationController: _zoom,
-                  minScale: 1,
-                  maxScale: 5,
-                  child: SizedBox.fromSize(
-                    size: box.biggest,
-                    child: GameWidget(game: _scene),
+                return Listener(
+                  // Mouse wheel / trackpad scroll zooms at the cursor.
+                  onPointerSignal: (e) {
+                    if (e is PointerScrollEvent) {
+                      _zoomAt(e.localPosition, math.exp(-e.scrollDelta.dy / 400));
+                    }
+                  },
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onScaleStart: _onScaleStart,
+                    onScaleUpdate: _onScaleUpdate,
+                    onScaleEnd: _onScaleEnd,
+                    child: ClipRect(
+                      child: AnimatedBuilder(
+                        animation: _zoom,
+                        builder: (context, child) => Transform(
+                          key: const ValueKey('base-view-transform'),
+                          transform: _zoom.value,
+                          child: child,
+                        ),
+                        child: SizedBox.fromSize(
+                          size: box.biggest,
+                          child: GameWidget(game: _scene),
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },
@@ -158,7 +242,7 @@ class _BaseViewScreenState extends State<BaseViewScreen>
                           ),
                         ),
                         const Text(
-                          'ピンチで拡大・ドラッグで移動',
+                          'ドラッグで回転・ピンチで拡大',
                           style: TextStyle(
                             fontSize: 11,
                             color: OrbitColors.textDim,

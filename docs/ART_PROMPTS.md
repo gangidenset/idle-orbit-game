@@ -81,68 +81,68 @@ Subject: an outer space background for the planet "unknown", violet and magenta 
 Square 1080x1080, opaque. Keep the lower center calm and darker (a planet will be drawn there). No planets, no spaceships, no text.
 ```
 
-## 惑星（5枚）
+## 惑星の表面（5枚）
 
-惑星の本体。円形で背景透過。
+惑星に巻き付けて回転させる横長の模様（2:1）。左右の端がつながるように作ります。
 
-### `planet_terra_nova.png` — 惑星：始まりの惑星 テラノヴァ
+### `planet_tex_terra_nova.png` — 惑星の表面：始まりの惑星 テラノヴァ
 
 ```text
 Use exactly the same art style as the style reference image earlier in this conversation.
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fictional planet seen from space (not Earth), a calm rocky world with blue seas and soft green-teal land masses drawn as simple horizontal band shapes. Big simple shapes so it reads at small size. Main color #4FA3E0.
+Subject: the surface of a fictional planet (not Earth), a calm rocky world with blue seas and soft green-teal land masses drawn as simple horizontal band shapes. Big simple shapes so it reads at small size. Main color #4FA3E0.
 
-Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-left edge, darker on the bottom-right. Transparent background, 1024x1024 PNG.
+This is a flat surface TEXTURE MAP of the planet, not a picture of a ball: a 2:1 equirectangular map, 2048x1024, filling the whole image edge to edge with surface, no space background, no sphere shading, no shadows, evenly lit. It must tile seamlessly horizontally (the left and right edges match exactly) because the game wraps it around a turning globe. Opaque PNG.
 ```
 
-### `planet_glacies.png` — 惑星：氷結惑星 グラシエ
+### `planet_tex_glacies.png` — 惑星の表面：氷結惑星 グラシエ
 
 ```text
 Use exactly the same art style as the style reference image earlier in this conversation.
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fictional planet seen from space (not Earth), an icy world with pale cyan and white ice sheets, a few angular glacier shapes and thin crack lines. Big simple shapes so it reads at small size. Main color #9EE7F5.
+Subject: the surface of a fictional planet (not Earth), an icy world with pale cyan and white ice sheets, a few angular glacier shapes and thin crack lines. Big simple shapes so it reads at small size. Main color #9EE7F5.
 
-Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-left edge, darker on the bottom-right. Transparent background, 1024x1024 PNG.
+This is a flat surface TEXTURE MAP of the planet, not a picture of a ball: a 2:1 equirectangular map, 2048x1024, filling the whole image edge to edge with surface, no space background, no sphere shading, no shadows, evenly lit. It must tile seamlessly horizontally (the left and right edges match exactly) because the game wraps it around a turning globe. Opaque PNG.
 ```
 
-### `planet_dunebell.png` — 惑星：砂漠惑星 デューンベル
+### `planet_tex_dunebell.png` — 惑星の表面：砂漠惑星 デューンベル
 
 ```text
 Use exactly the same art style as the style reference image earlier in this conversation.
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fictional planet seen from space (not Earth), a desert world with sand-gold dunes drawn as wavy horizontal bands and a few rust-orange canyon lines. Big simple shapes so it reads at small size. Main color #E3B261.
+Subject: the surface of a fictional planet (not Earth), a desert world with sand-gold dunes drawn as wavy horizontal bands and a few rust-orange canyon lines. Big simple shapes so it reads at small size. Main color #E3B261.
 
-Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-left edge, darker on the bottom-right. Transparent background, 1024x1024 PNG.
+This is a flat surface TEXTURE MAP of the planet, not a picture of a ball: a 2:1 equirectangular map, 2048x1024, filling the whole image edge to edge with surface, no space background, no sphere shading, no shadows, evenly lit. It must tile seamlessly horizontally (the left and right edges match exactly) because the game wraps it around a turning globe. Opaque PNG.
 ```
 
-### `planet_vulcara.png` — 惑星：火山惑星 ヴァルカラ
+### `planet_tex_vulcara.png` — 惑星の表面：火山惑星 ヴァルカラ
 
 ```text
 Use exactly the same art style as the style reference image earlier in this conversation.
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fictional planet seen from space (not Earth), a volcanic world with dark basalt surface and glowing orange-red lava rivers as simple flat lines. Big simple shapes so it reads at small size. Main color #F26B3A.
+Subject: the surface of a fictional planet (not Earth), a volcanic world with dark basalt surface and glowing orange-red lava rivers as simple flat lines. Big simple shapes so it reads at small size. Main color #F26B3A.
 
-Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-left edge, darker on the bottom-right. Transparent background, 1024x1024 PNG.
+This is a flat surface TEXTURE MAP of the planet, not a picture of a ball: a 2:1 equirectangular map, 2048x1024, filling the whole image edge to edge with surface, no space background, no sphere shading, no shadows, evenly lit. It must tile seamlessly horizontally (the left and right edges match exactly) because the game wraps it around a turning globe. Opaque PNG.
 ```
 
-### `planet_unknown.png` — 惑星：未知の惑星
+### `planet_tex_unknown.png` — 惑星の表面：未知の惑星
 
 ```text
 Use exactly the same art style as the style reference image earlier in this conversation.
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fictional planet seen from space (not Earth), a mysterious world with violet surface, softly glowing geometric patterns and a faint ring of light. Big simple shapes so it reads at small size. Main color #B07CFF.
+Subject: the surface of a fictional planet (not Earth), a mysterious world with violet surface, softly glowing geometric patterns and a faint ring of light. Big simple shapes so it reads at small size. Main color #B07CFF.
 
-Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-left edge, darker on the bottom-right. Transparent background, 1024x1024 PNG.
+This is a flat surface TEXTURE MAP of the planet, not a picture of a ball: a 2:1 equirectangular map, 2048x1024, filling the whole image edge to edge with surface, no space background, no sphere shading, no shadows, evenly lit. It must tile seamlessly horizontally (the left and right edges match exactly) because the game wraps it around a turning globe. Opaque PNG.
 ```
 
 ## 鉱石採掘施設（6枚）

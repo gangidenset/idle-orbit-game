@@ -98,7 +98,12 @@ final Paint _imagePaint = Paint()
 /// per-frame allocations beyond paints' state) to stay cheap on low-end
 /// devices; the static starfield/nebula is rendered once per size.
 class OrbitScene extends FlameGame {
-  OrbitScene(this.data, {this.planetCenterY = 0.66, this.planetRadius = 0.27});
+  OrbitScene(
+    this.data, {
+    this.planetCenterY = 0.66,
+    this.planetRadius = 0.27,
+    this.idleSpin = false,
+  });
 
   final SceneData Function() data;
 
@@ -107,6 +112,58 @@ class OrbitScene extends FlameGame {
 
   /// Planet radius as a fraction of the scene's shorter side.
   final double planetRadius;
+
+  /// Slowly turn the planet by itself when nobody is touching it.
+  final bool idleSpin;
+
+  /// Planet rotation around its vertical axis (radians). 0 = front view
+  /// with the five facilities facing the viewer.
+  double yaw = 0;
+  double _yawVelocity = 0;
+  double? _yawTarget;
+  double _idle = 0;
+
+  /// Turns the planet directly (finger drag).
+  void spinBy(double radians) {
+    yaw += radians;
+    _yawVelocity = 0;
+    _yawTarget = null;
+    _idle = 0;
+  }
+
+  /// Lets go with a speed, so the planet keeps turning and slows down.
+  void fling(double radiansPerSecond) {
+    _yawVelocity = radiansPerSecond.clamp(-12.0, 12.0);
+    _idle = 0;
+  }
+
+  /// Smoothly turns back to the front view (nearest full turn).
+  void spinToFront() {
+    const turn = math.pi * 2;
+    _yawTarget = (yaw / turn).roundToDouble() * turn;
+    _yawVelocity = 0;
+    _idle = 0;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    final target = _yawTarget;
+    if (target != null) {
+      yaw += (target - yaw) * math.min(1.0, dt * 7);
+      if ((target - yaw).abs() < 0.002) {
+        yaw = target;
+        _yawTarget = null;
+      }
+    } else if (_yawVelocity.abs() > 0.01) {
+      yaw += _yawVelocity * dt;
+      _yawVelocity *= math.exp(-2.2 * dt);
+      _idle = 0;
+    } else {
+      _idle += dt;
+      if (idleSpin && _idle > 4) yaw += 0.06 * dt;
+    }
+  }
 
   /// Where the planet is drawn for a scene of [size] (also used by the
   /// full-screen view to aim its close-up zoom).
@@ -247,26 +304,66 @@ class _Spark {
   double life = 1;
 }
 
+/// Where a surface object at a given longitude appears for the current
+/// rotation. Objects live on a ring around the top of the planet: they slide
+/// along the top rim as the planet turns and pass behind it on the far side.
+class _RimSpot {
+  const _RimSpot(this.angle, this.depth);
+
+  /// Angle on the planet's rim (-pi/2 = top).
+  final double angle;
+
+  /// 1 = facing the viewer, -1 = directly behind the planet.
+  final double depth;
+
+  bool get front => depth >= 0;
+
+  /// Far-side objects are drawn smaller.
+  double get scale => 0.72 + 0.28 * (depth + 1) / 2;
+}
+
 class _Base extends Component with HasGameReference<OrbitScene> {
   double _t = 0;
   double _spawn = 0;
-  final List<(double, double)> _puffs = []; // (angle, life)
+  final List<(double, double)> _puffs = []; // (rim angle, life)
   final List<_Spark> _sparks = [];
   final Map<String, int> _seenEvolution = {};
   final _fill = Paint();
   final _stroke = Paint()..style = PaintingStyle.stroke;
   final _rng = math.Random(11);
 
-  static const _slotSpread = 0.30; // radians between structures
+  /// How far along the rim the ring reaches on each side (radians).
+  static const _ringSpread = 1.1;
+
+  /// Rim angle between neighbouring facilities in the front view.
+  static const _slotSpread = 0.30;
+
+  /// Longitudes of the surface decorations on the far side of the planet.
+  static const _decoLongitudes = {'comm_array': math.pi - 0.45, 'space_elevator': math.pi + 0.45};
+
+  _RimSpot _spot(double longitude) {
+    final a = longitude + game.yaw;
+    return _RimSpot(-math.pi / 2 + _ringSpread * math.sin(a), math.cos(a));
+  }
+
+  /// Facilities are spaced so that, facing front, they sit where they did
+  /// before the planet could turn (0.30 rad apart along the top rim).
+  double _facilityLongitude(int i, int n) {
+    final x = (i - (n - 1) / 2) * _slotSpread / _ringSpread;
+    return math.asin(x.clamp(-1.0, 1.0));
+  }
 
   @override
   void update(double dt) {
     _t += dt;
     final d = game.data();
+    if (d.structures.isEmpty) return;
+    // Mining dust rises from the ore mine (first facility) while it faces us.
+    final mine = _spot(_facilityLongitude(0, d.structures.length));
     _spawn += dt * (0.5 + math.min(3.5, math.log(1 + d.oreRate)));
     while (_spawn > 1) {
       _spawn -= 1;
-      _puffs.add((-math.pi / 2 - 2 * _slotSpread + (_rng.nextDouble() - 0.5) * 0.25, 1));
+      if (mine.front) _puffs.add((mine.angle + (_rng.nextDouble() - 0.5) * 0.25, 1));
     }
     for (var i = 0; i < _puffs.length; i++) {
       _puffs[i] = (_puffs[i].$1, _puffs[i].$2 - dt * 0.8);
@@ -287,29 +384,57 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     final now = DateTime.now().millisecondsSinceEpoch;
     final has = d.decorations.contains;
 
+    Offset rimPoint(double angle) =>
+        Offset(center.dx + math.cos(angle) * r, center.dy + math.sin(angle) * r);
+
+    // Everything standing on the surface, with where it currently appears.
+    final items = <(_RimSpot, void Function(_RimSpot))>[];
+    for (var i = 0; i < d.structures.length; i++) {
+      final st = d.structures[i];
+      final slot = i;
+      items.add((
+        _spot(_facilityLongitude(i, d.structures.length)),
+        (spot) {
+          final base = rimPoint(spot.angle);
+          _structure(canvas, st, base, spot.angle, slot, spot.scale);
+          final at = st.evolvedAtMs;
+          if (at != null && _seenEvolution[st.id] != at) {
+            _seenEvolution[st.id] = at;
+            _burst(base, st.color);
+          }
+          if (at != null && now - at < 1200) _evolveFlash(canvas, base, st.color, (now - at) / 1200);
+        },
+      ));
+    }
+    if (has('comm_array')) {
+      items.add((_spot(_decoLongitudes['comm_array']!), (spot) => _commArray(canvas, rimPoint(spot.angle), spot.angle, spot.scale)));
+    }
+    if (has('space_elevator')) {
+      items.add((_spot(_decoLongitudes['space_elevator']!), (spot) => _elevator(canvas, center, r, spot.angle, spot.scale)));
+    }
+    // Far side first (the planet then hides their bases), nearest last.
+    items.sort((a, b) => a.$1.depth.compareTo(b.$1.depth));
+
     if (has('warp_halo')) _warpHalo(canvas, center, r);
     if (has('moon')) _moon(canvas, center, r, front: false);
     _drones(canvas, d, center, r, front: false);
     if (has('station')) _station(canvas, center, r);
+    // Far-side objects fade with depth so they read as behind the planet.
+    for (final (spot, draw) in items) {
+      if (spot.front) continue;
+      final alpha = 0.45 + 0.55 * (1 + spot.depth);
+      canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, alpha.clamp(0.45, 1.0)));
+      draw(spot);
+      canvas.restore();
+    }
 
     _planet(canvas, d, center, r);
     if (has('city_lights')) _cityLights(canvas, center, r);
     if (has('aurora')) _aurora(canvas, center, r);
-    if (has('space_elevator')) _elevator(canvas, center, r);
 
-    for (var i = 0; i < d.structures.length; i++) {
-      final s = d.structures[i];
-      final angle = -math.pi / 2 + (i - (d.structures.length - 1) / 2) * _slotSpread;
-      final base = Offset(center.dx + math.cos(angle) * r, center.dy + math.sin(angle) * r);
-      _structure(canvas, s, base, angle, i);
-      final at = s.evolvedAtMs;
-      if (at != null && _seenEvolution[s.id] != at) {
-        _seenEvolution[s.id] = at;
-        _burst(base, s.color);
-      }
-      if (at != null && now - at < 1200) _evolveFlash(canvas, base, s.color, (now - at) / 1200);
+    for (final (spot, draw) in items) {
+      if (spot.front) draw(spot);
     }
-    if (has('comm_array')) _commArray(canvas, center, r);
 
     for (final (angle, life) in _puffs) {
       final dist = r + 14 + (1 - life) * 36;
@@ -339,6 +464,13 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     canvas.drawCircle(c, r * 1.45, _fill);
     _fill.shader = null;
 
+    // A seamless 2:1 surface texture turns with the planet; a disc image
+    // cannot turn, so it is only used when no texture exists.
+    final texture = game.art['planet_tex_${d.planetId}'];
+    if (texture != null) {
+      _texturedPlanet(canvas, texture, c, r);
+      return;
+    }
     if (sprite != null) {
       canvas.drawImageRect(
           sprite,
@@ -370,6 +502,23 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       canvas.drawOval(
           Rect.fromCenter(center: Offset(c.dx + dx, y), width: r * 1.9, height: r * 0.14), _fill);
     }
+    // Surface patches at fixed longitudes: they slide across the face and
+    // narrow towards the edge as the planet turns.
+    final patch = math.Random(d.planetId.hashCode ^ 0x5f);
+    for (var i = 0; i < 9; i++) {
+      final lon = patch.nextDouble() * math.pi * 2;
+      final lat = patch.nextDouble() * 1.4 - 0.7;
+      final w = r * (0.25 + patch.nextDouble() * 0.35);
+      final h = w * (0.35 + patch.nextDouble() * 0.3);
+      final light = patch.nextBool();
+      final a = lon + game.yaw;
+      final facing = math.cos(a);
+      if (facing <= 0) continue;
+      final p = Offset(c.dx + math.cos(lat) * math.sin(a) * r, c.dy - math.sin(lat) * r);
+      _fill.color = (light ? const Color(0xFFFFFFFF) : const Color(0xFF000000))
+          .withValues(alpha: (light ? 0.10 : 0.14) * facing);
+      canvas.drawOval(Rect.fromCenter(center: p, width: w * facing, height: h), _fill);
+    }
     // Night side (lower right).
     _fill.shader = Gradient.radial(c.translate(r * 0.9, r * 0.7), r * 1.4,
         [const Color(0xFF000000).withValues(alpha: 0.55), const Color(0x00000000)]);
@@ -384,12 +533,35 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     canvas.drawArc(Rect.fromCircle(center: c, radius: r - 0.5), math.pi * 0.95, math.pi * 0.8, false, _stroke);
   }
 
+  void _texturedPlanet(Canvas canvas, Image tex, Offset c, double r) {
+    canvas.save();
+    canvas.clipPath(Path()..addOval(Rect.fromCircle(center: c, radius: r)));
+    final h = r * 2;
+    final w = h * tex.width / tex.height; // one full turn = texture width
+    var x = -((game.yaw / (math.pi * 2)) * w) % w;
+    if (x > 0) x -= w;
+    final src = Rect.fromLTWH(0, 0, tex.width.toDouble(), tex.height.toDouble());
+    for (var dx = x; dx < r * 2; dx += w) {
+      canvas.drawImageRect(tex, src, Rect.fromLTWH(c.dx - r + dx, c.dy - r, w, h), _imagePaint);
+    }
+    // Same lighting as the procedural planet so textures look round.
+    _fill.shader = Gradient.radial(c.translate(-r * 0.35, -r * 0.4), r * 1.6, [
+      const Color(0xFFFFFFFF).withValues(alpha: 0.18),
+      const Color(0x00000000),
+      const Color(0xFF000000).withValues(alpha: 0.6),
+    ], [0, 0.45, 1]);
+    canvas.drawCircle(c, r, _fill);
+    _fill.shader = null;
+    canvas.restore();
+  }
+
   // ---- structures
 
-  void _structure(Canvas canvas, StructureData s, Offset base, double angle, int slot) {
+  void _structure(Canvas canvas, StructureData s, Offset base, double angle, int slot, [double scale = 1]) {
     canvas.save();
     canvas.translate(base.dx, base.dy);
     canvas.rotate(angle + math.pi / 2);
+    if (scale != 1) canvas.scale(scale);
 
     final sprite = s.tier > 0 ? game.art['facility_${s.id}_t${s.tier}'] : null;
     if (sprite != null) {
@@ -550,18 +722,26 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     canvas.restore();
   }
 
+  /// Lights sit at fixed longitudes/latitudes on the globe, so they travel
+  /// with the planet's rotation; only those on the night side glow.
   void _cityLights(Canvas canvas, Offset c, double r) {
     canvas.save();
     canvas.clipPath(Path()..addOval(Rect.fromCircle(center: c, radius: r)));
     final rng = math.Random(5);
-    for (var i = 0; i < 70; i++) {
-      // Concentrate on the night side (lower right).
-      final a = math.pi * (0.0 + rng.nextDouble() * 0.6);
-      final d = r * (0.35 + rng.nextDouble() * 0.6);
-      final p = Offset(c.dx + math.cos(a) * d, c.dy + math.sin(a) * d);
+    for (var i = 0; i < 90; i++) {
+      final lon = rng.nextDouble() * math.pi * 2;
+      final lat = (rng.nextDouble() * 1.6 - 0.7); // mostly the lower half
+      final size = 0.9 + rng.nextDouble() * 0.6;
+      final a = lon + game.yaw;
+      if (math.cos(a) < 0.05) continue; // far side
+      final x = math.cos(lat) * math.sin(a);
+      final y = -math.sin(lat);
+      // Light comes from the top-left: only the bottom-right half is night.
+      if (x * 0.6 + y * 0.8 < 0.15) continue;
+      final p = Offset(c.dx + x * r, c.dy + y * r);
       final tw = 0.5 + 0.5 * math.sin(_t * 2 + i);
       _fill.color = const Color(0xFFFFD27A).withValues(alpha: 0.35 + 0.45 * tw);
-      canvas.drawCircle(p, 0.9 + rng.nextDouble() * 0.6, _fill);
+      canvas.drawCircle(p, size, _fill);
     }
     canvas.restore();
   }
@@ -583,20 +763,20 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     }
   }
 
-  void _elevator(Canvas canvas, Offset c, double r) {
-    final a = -math.pi / 2 + 3.2 * _slotSpread;
-    final from = Offset(c.dx + math.cos(a) * r, c.dy + math.sin(a) * r);
-    final to = Offset(c.dx + math.cos(a) * r * 2.4, c.dy + math.sin(a) * r * 2.4);
+  void _elevator(Canvas canvas, Offset c, double r, double angle, double scale) {
+    final from = Offset(c.dx + math.cos(angle) * r, c.dy + math.sin(angle) * r);
+    final len = r * 1.4 * scale;
+    final to = from + Offset(math.cos(angle) * len, math.sin(angle) * len);
     _stroke
-      ..strokeWidth = 1.4
+      ..strokeWidth = 1.4 * scale
       ..color = const Color(0xFFB0BEC5).withValues(alpha: 0.7);
     canvas.drawLine(from, to, _stroke);
     final k = (_t * 0.25) % 1;
     final car = Offset.lerp(from, to, k)!;
     _fill.color = const Color(0xFFFFD54F);
-    canvas.drawCircle(car, 2.4, _fill);
+    canvas.drawCircle(car, 2.4 * scale, _fill);
     _fill.color = const Color(0xFFCFD8DC);
-    canvas.drawCircle(to, 4, _fill);
+    canvas.drawCircle(to, 4 * scale, _fill);
   }
 
   void _warpHalo(Canvas canvas, Offset c, double r) {
@@ -614,12 +794,11 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     canvas.restore();
   }
 
-  void _commArray(Canvas canvas, Offset c, double r) {
-    final a = -math.pi / 2 - 3.2 * _slotSpread;
-    final base = Offset(c.dx + math.cos(a) * r, c.dy + math.sin(a) * r);
+  void _commArray(Canvas canvas, Offset base, double angle, double scale) {
     canvas.save();
     canvas.translate(base.dx, base.dy);
-    canvas.rotate(a + math.pi / 2);
+    canvas.rotate(angle + math.pi / 2);
+    canvas.scale(scale);
     _stroke
       ..strokeWidth = 1.4
       ..color = const Color(0xFFCFD8DC);

@@ -147,7 +147,7 @@ Perfect circle, centered, filling 95% of the image. Lighter crescent on the top-
 
 ## 鉱石採掘施設（6枚）
 
-1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
+主役の色：砂金色。1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。（取り込み済み。作り直す場合のみ）
 
 ### `facility_ore_mine_t1.png` — 採掘リグ（1段階目）
 
@@ -156,7 +156,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a small mining hut with a little drill bit on top — a mining facility that drills ore from the ground on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a small mining hut with a little drill bit on top — a mining facility that drills ore from the ground on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -168,7 +170,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a mining plant with a conveyor belt and an ore hopper — a mining facility that drills ore from the ground on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a mining plant with a conveyor belt and an ore hopper — a mining facility that drills ore from the ground on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -180,7 +184,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a deep drilling base with a large drill tower — a mining facility that drills ore from the ground on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a deep drilling base with a large drill tower — a mining facility that drills ore from the ground on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -192,7 +198,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a continental drilling fortress with heavy armored walls — a mining facility that drills ore from the ground on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a continental drilling fortress with heavy armored walls — a mining facility that drills ore from the ground on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -204,7 +212,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a planet-core excavation complex with a giant drill shaft — a mining facility that drills ore from the ground on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a planet-core excavation complex with a giant drill shaft — a mining facility that drills ore from the ground on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -216,14 +226,16 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a dimensional mining gate, a tall portal frame pulling glowing ore from another dimension — a mining facility that drills ore from the ground on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Accent color #D9B38C with deep navy shadows and amber window lights.
+Subject: a dimensional mining gate, a tall portal frame pulling glowing ore from another dimension — a mining facility that drills ore from the ground on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sandy gold #D9B38C. Roofs, main walls and panels are sandy gold, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
 
 ## エネルギー発電施設（6枚）
 
-1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
+主役の色：明るい黄色。1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
 
 ### `facility_power_plant_t1.png` — ソーラーパネル（1段階目）
 
@@ -232,7 +244,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a small tilted solar panel on a short post — a power station that generates energy on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a small tilted solar panel on a short post — a power station that generates energy on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -244,7 +258,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a power station with several solar panels and a transformer box — a power station that generates energy on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a power station with several solar panels and a transformer box — a power station that generates energy on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -256,7 +272,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a fusion reactor with a domed containment building — a power station that generates energy on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a fusion reactor with a domed containment building — a power station that generates energy on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -268,7 +286,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a stellar concentrator tower with mirror petals around a central tower — a power station that generates energy on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a stellar concentrator tower with mirror petals around a central tower — a power station that generates energy on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -280,7 +300,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a Dyson array, a tall tower with ring-shaped collectors — a power station that generates energy on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a Dyson array, a tall tower with ring-shaped collectors — a power station that generates energy on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -292,14 +314,16 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a star-core reactor, a monumental tower holding a small bright sun in a cradle — a power station that generates energy on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Accent color #FFD54F with deep navy shadows and amber window lights.
+Subject: a star-core reactor, a monumental tower holding a small bright sun in a cradle — a power station that generates energy on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is sunny yellow #FFD54F. Roofs, main walls and panels are sunny yellow, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
 
 ## 合金精錬施設（6枚）
 
-1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
+主役の色：青緑（ティール）。1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
 
 ### `facility_alloy_smelter_t1.png` — 小型炉（1段階目）
 
@@ -308,7 +332,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a small furnace with a short chimney — a smelter that turns ore into alloy on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a small furnace with a short chimney — a smelter that turns ore into alloy on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -320,7 +346,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a smelting factory with two chimneys and a crucible — a smelter that turns ore into alloy on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a smelting factory with two chimneys and a crucible — a smelter that turns ore into alloy on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -332,7 +360,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a plasma blast furnace with a glowing cyan core window — a smelter that turns ore into alloy on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a plasma blast furnace with a glowing cyan core window — a smelter that turns ore into alloy on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -344,7 +374,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a heavy alloy industrial complex with stacked furnaces and pipes — a smelter that turns ore into alloy on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a heavy alloy industrial complex with stacked furnaces and pipes — a smelter that turns ore into alloy on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -356,7 +388,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a nano-refining plant, a sleek tower with glowing cyan conduits — a smelter that turns ore into alloy on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a nano-refining plant, a sleek tower with glowing cyan conduits — a smelter that turns ore into alloy on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -368,14 +402,16 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a matter conversion reactor, a crystal-like tower transforming light into metal — a smelter that turns ore into alloy on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Accent color #80DEEA with deep navy shadows and amber window lights.
+Subject: a matter conversion reactor, a crystal-like tower transforming light into metal — a smelter that turns ore into alloy on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is aqua teal (clearly greener than royal blue) #80DEEA. Roofs, main walls and panels are aqua teal (clearly greener than royal blue), covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
 
 ## 研究施設（6枚）
 
-1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
+主役の色：ラベンダー（薄紫）。1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
 
 ### `facility_research_lab_t1.png` — 観測小屋（1段階目）
 
@@ -384,7 +420,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a small observation hut with a tiny telescope — a research lab that produces research points on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a small observation hut with a tiny telescope — a research lab that produces research points on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -396,7 +434,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a research institute with a satellite dish — a research lab that produces research points on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a research institute with a satellite dish — a research lab that produces research points on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -408,7 +448,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a quantum lab with a glowing lavender dome — a research lab that produces research points on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a quantum lab with a glowing lavender dome — a research lab that produces research points on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -420,7 +462,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a stellar academy with a large observatory dome and pillars — a research lab that produces research points on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a stellar academy with a large observatory dome and pillars — a research lab that produces research points on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -432,7 +476,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a super-intelligence core, a tall tower with a glowing lavender brain-like sphere — a research lab that produces research points on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a super-intelligence core, a tall tower with a glowing lavender brain-like sphere — a research lab that produces research points on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -444,14 +490,16 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a cosmic library, a monumental spire of floating book-like panels — a research lab that produces research points on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Accent color #CE93D8 with deep navy shadows and amber window lights.
+Subject: a cosmic library, a monumental spire of floating book-like panels — a research lab that produces research points on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is lavender purple #CE93D8. Roofs, main walls and panels are lavender purple, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
 
 ## 資源保管施設（6枚）
 
-1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
+主役の色：鋼のグレー。1段階目から6段階目へ、だんだん大きく豪華に。同じ会話の中で続けて作ると統一感が出ます。
 
 ### `facility_storage_t1.png` — 資材テント（1段階目）
 
@@ -460,7 +508,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a small supply tent with crates — a storage that keeps resources on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: a small supply tent with crates — a storage that keeps resources on a small planet base. Tier 1 of 6: small and humble, a single simple block, one or two small windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -472,7 +522,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a warehouse with a large sliding door — a storage that keeps resources on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: a warehouse with a large sliding door — a storage that keeps resources on a small planet base. Tier 2 of 6: larger main block with a smaller side module attached on each side, a row of lit windows. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -484,7 +536,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a large silo with a domed roof — a storage that keeps resources on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: a large silo with a domed roof — a storage that keeps resources on a small planet base. Tier 3 of 6: taller, a rounded dome top and a thin antenna with a small red beacon light. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -496,7 +550,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: an underground storage network entrance with a large hatch and cargo lift — a storage that keeps resources on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: an underground storage network entrance with a large hatch and cargo lift — a storage that keeps resources on a small planet base. Tier 4 of 6: tall and impressive, many lit windows, a thin vertical beam of light rising from the top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -508,7 +564,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a compression vault, a tall cylinder with ring bands — a storage that keeps resources on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: a compression vault, a tall cylinder with ring bands — a storage that keeps resources on a small planet base. Tier 5 of 6: very tall spire, a flat ring orbiting around its middle, a vertical light beam on top. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```
@@ -520,7 +578,9 @@ Use exactly the same art style as the style reference image earlier in this conv
 
 Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
 
-Subject: a subspace storage, a monumental vault door floating in a ring of light — a storage that keeps resources on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Accent color #90A4AE with deep navy shadows and amber window lights.
+Subject: a subspace storage, a monumental vault door floating in a ring of light — a storage that keeps resources on a small planet base. Tier 6 of 6: monumental megastructure, a glowing circular halo behind it, rings and a light beam, the most majestic of all tiers. Amber window lights.
+
+COLOR RULE (most important): the dominant color of this building is steel grey #90A4AE. Roofs, main walls and panels are steel grey, covering more than half of the building's visible surface. Use navy and blue only for the hexagonal base plate and shadows; white only as small trim. Do not make the building mostly blue.
 
 It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
 ```

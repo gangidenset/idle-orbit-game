@@ -33,5 +33,13 @@ SceneData buildSceneData(GameController c) {
     specialDrones: special.length,
     boosted: c.engine.boostMultiplier(s, c.nowMs) > 1,
     oreRate: c.snap.gross[ResourceType.ore],
+    monuments: [
+      for (final (i, p) in c.visuals.monuments(s).indexed)
+        MonumentData(
+          planetId: p.id,
+          color: Color(p.colorValue),
+          latest: i == c.visuals.monuments(s).length - 1 && i > 0,
+        ),
+    ],
   );
 }

@@ -80,8 +80,8 @@ class _HomeShellState extends State<HomeShell> {
         showMessage(context, text, error: isError);
       case OfflineRewardEvent():
         _showOffline();
-      case PlanetUnlockedEvent(:final planet):
-        showPlanetUnlocked(context, planet).then((_) {
+      case PlanetUnlockedEvent(:final planet, :final newMonument):
+        showPlanetUnlocked(context, planet, newMonument: newMonument).then((_) {
           if (mounted) context.read<GameController>().maybeShowInterstitial('planet_unlock');
         });
       case NotificationPromptEvent():

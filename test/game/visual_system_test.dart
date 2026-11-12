@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:idle_orbit/core/clock.dart';
 import 'package:idle_orbit/data/save_repository.dart';
 import 'package:idle_orbit/game/engine/game_engine.dart';
+import 'package:idle_orbit/game/engine/prestige_system.dart';
 import 'package:idle_orbit/game/engine/visual_system.dart';
 import 'package:idle_orbit/game/game_controller.dart';
 import 'package:idle_orbit/game/model/game_state.dart';
@@ -106,6 +107,54 @@ void main() {
     await Future<void>.delayed(Duration.zero);
     expect(events.whereType<DecorationUnlockedEvent>().map((e) => e.decoration.id),
         contains('comm_array'));
+    await sub.cancel();
+    c.dispose();
+  });
+
+  test('monuments: first planet from the start, one per planet reached, kept across warps', () {
+    final prestige = PrestigeSystem(engine);
+    final s = engine.newGame(t0)
+      ..resources[ResourceType.alloy] = 1e15
+      ..resources[ResourceType.research] = 1e15;
+    expect(v.monuments(s).map((p) => p.id), ['terra_nova']);
+    engine.unlockPlanet(s, 'glacies');
+    engine.unlockPlanet(s, 'dunebell');
+    expect(v.monuments(s).map((p) => p.id), ['terra_nova', 'glacies', 'dunebell']);
+
+    s.runStats[Metric.runAlloy] = 1e9;
+    expect(prestige.prestige(s, t0), greaterThan(0));
+    expect(s.unlockedPlanets, {'terra_nova'}, reason: 'warp resets the planets');
+    expect(v.monuments(s), hasLength(3), reason: 'but the monuments stay');
+  });
+
+  test('planet unlock event reports a new monument only the first time', () async {
+    final c = GameController(
+      config: config,
+      saveRepository: JsonSaveRepository(MemoryStore()),
+      adService: const DisabledAdService(),
+      purchaseService: UnavailablePurchaseService(),
+      analytics: LocalAnalyticsService(),
+      clock: FakeClock(t0),
+    );
+    await c.start();
+    final events = <PlanetUnlockedEvent>[];
+    final sub = c.events.listen((e) {
+      if (e is PlanetUnlockedEvent) events.add(e);
+    });
+    void rich() => c.state
+      ..resources[ResourceType.alloy] = 1e15
+      ..resources[ResourceType.research] = 1e15;
+
+    rich();
+    c.unlockPlanet('glacies');
+    c.unlockPlanet('dunebell');
+    c.state.runStats[Metric.runAlloy] = 1e9;
+    c.doPrestige();
+    rich();
+    c.unlockPlanet('glacies'); // again, after the warp
+    await Future<void>.delayed(Duration.zero);
+    expect(events.map((e) => (e.planet.id, e.newMonument)),
+        [('glacies', true), ('dunebell', true), ('glacies', false)]);
     await sub.cancel();
     c.dispose();
   });

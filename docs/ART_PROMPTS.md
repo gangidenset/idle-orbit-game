@@ -612,3 +612,67 @@ Subject: A small orbital space station, flat vector: a central round hub, a ring
 
 Readable when shown very small: bold simple shapes, no tiny details. Transparent background, 512x512 PNG, centered.
 ```
+
+## 開拓記念碑（5枚）
+
+基地の裏側に並ぶ、惑星ごとの記念碑。形は共通で、上の球の色だけが惑星ごとに変わります。
+
+### `deco_monument_terra_nova.png` — 開拓記念碑：始まりの惑星 テラノヴァ
+
+```text
+Use exactly the same art style as the style reference image earlier in this conversation.
+
+Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
+
+Subject: a small commemorative monument for reaching the planet "terra_nova": a white stone obelisk on a small hexagonal navy-blue base plate, with a small glowing orb on top in #4FA3E0 (the color of that planet). Simple, dignified, the same shape for every planet; only the orb color differs.
+
+It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
+```
+
+### `deco_monument_glacies.png` — 開拓記念碑：氷結惑星 グラシエ
+
+```text
+Use exactly the same art style as the style reference image earlier in this conversation.
+
+Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
+
+Subject: a small commemorative monument for reaching the planet "glacies": a white stone obelisk on a small hexagonal navy-blue base plate, with a small glowing orb on top in #9EE7F5 (the color of that planet). Simple, dignified, the same shape for every planet; only the orb color differs.
+
+It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
+```
+
+### `deco_monument_dunebell.png` — 開拓記念碑：砂漠惑星 デューンベル
+
+```text
+Use exactly the same art style as the style reference image earlier in this conversation.
+
+Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
+
+Subject: a small commemorative monument for reaching the planet "dunebell": a white stone obelisk on a small hexagonal navy-blue base plate, with a small glowing orb on top in #E3B261 (the color of that planet). Simple, dignified, the same shape for every planet; only the orb color differs.
+
+It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
+```
+
+### `deco_monument_vulcara.png` — 開拓記念碑：火山惑星 ヴァルカラ
+
+```text
+Use exactly the same art style as the style reference image earlier in this conversation.
+
+Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
+
+Subject: a small commemorative monument for reaching the planet "vulcara": a white stone obelisk on a small hexagonal navy-blue base plate, with a small glowing orb on top in #F26B3A (the color of that planet). Simple, dignified, the same shape for every planet; only the orb color differs.
+
+It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
+```
+
+### `deco_monument_unknown.png` — 開拓記念碑：未知の惑星
+
+```text
+Use exactly the same art style as the style reference image earlier in this conversation.
+
+Flat vector illustration for a mobile idle game, minimal geometric shapes, limited palette of deep navy, cyan, amber and soft white plus the accent color given below, flat shading with only one light tone and one dark tone per color, light coming from the top-left, clean modern design, no outlines, no gradients except very subtle ones, no text, no watermark. Signature details of this game: buildings are drawn in a slight three-quarter (isometric) view, each building stands on a small hexagonal navy-blue base plate, and each has one warm amber light.
+
+Subject: a small commemorative monument for reaching the planet "unknown": a white stone obelisk on a small hexagonal navy-blue base plate, with a small glowing orb on top in #B07CFF (the color of that planet). Simple, dignified, the same shape for every planet; only the orb color differs.
+
+It must stay readable when shown very small (about 60 pixels tall): bold simple silhouette, a few large shapes, strong contrast between roof/top and body, no tiny details, no thin lines, no small text-like patterns. Compact, sturdy proportions about as wide as tall; tall towers get a wide base. The base plate touches the bottom center of the image and the building fills about 90% of the image height. Light beams and glows are semi-transparent on the transparent background, never blended into a background color. Transparent background, 512x512 PNG.
+```

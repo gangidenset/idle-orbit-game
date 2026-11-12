@@ -194,6 +194,7 @@ class PlanetConfig {
   PlanetConfig.fromJson(Map<String, dynamic> j)
       : id = j['id'] as String,
         name = j['name'] as String,
+        monumentName = j['monumentName'] as String? ?? '${j['name']} 記念碑',
         description = j['description'] as String? ?? '',
         colorHex = j['color'] as String? ?? '#4FA3E0',
         permanentMultiplier = _d(j['permanentMultiplier'], 1),
@@ -203,6 +204,10 @@ class PlanetConfig {
 
   final String id;
   final String name;
+
+  /// Monument built on the far side of the base the first time this planet
+  /// is ever unlocked (kept across warps).
+  final String monumentName;
   final String description;
   final String colorHex;
   final double permanentMultiplier;

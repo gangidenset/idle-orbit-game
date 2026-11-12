@@ -9,20 +9,22 @@ import '../../services/audio/sound_service.dart';
 import '../../ui/widgets.dart';
 
 /// Celebration shown when a new planet is unlocked.
-Future<void> showPlanetUnlocked(BuildContext context, PlanetConfig planet) {
+Future<void> showPlanetUnlocked(BuildContext context, PlanetConfig planet,
+    {bool newMonument = false}) {
   playSfx(context, Sfx.unlock);
   return showGeneralDialog<void>(
     context: context,
     barrierDismissible: false,
     barrierColor: Colors.black87,
     transitionDuration: const Duration(milliseconds: 300),
-    pageBuilder: (ctx, _, _) => _PlanetUnlocked(planet: planet),
+    pageBuilder: (ctx, _, _) => _PlanetUnlocked(planet: planet, newMonument: newMonument),
   );
 }
 
 class _PlanetUnlocked extends StatefulWidget {
-  const _PlanetUnlocked({required this.planet});
+  const _PlanetUnlocked({required this.planet, required this.newMonument});
   final PlanetConfig planet;
+  final bool newMonument;
 
   @override
   State<_PlanetUnlocked> createState() => _PlanetUnlockedState();
@@ -92,6 +94,20 @@ class _PlanetUnlockedState extends State<_PlanetUnlocked> with SingleTickerProvi
                       Text('全資源の生産 ×${fmt(widget.planet.permanentMultiplier)}',
                           style: const TextStyle(
                               fontSize: 18, color: OrbitColors.success, fontWeight: FontWeight.bold)),
+                      if (widget.newMonument) ...[
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            Icon(Icons.account_balance, size: 18, color: Color(widget.planet.colorValue)),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text('基地の裏側に「${widget.planet.monumentName}」が建ちました',
+                                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 13)),
+                            ),
+                          ]),
+                        ),
+                      ],
                     ]),
                   ),
                   const SizedBox(height: 32),

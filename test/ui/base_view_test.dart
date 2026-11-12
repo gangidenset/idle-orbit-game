@@ -49,16 +49,8 @@ void main() {
     expect(find.text('深層掘削基地'), findsOneWidget, reason: 'ore mine tier 3 name');
     expect(find.text('Lv.30・あと20で進化'), findsOneWidget);
     // 1 decoration of 7 unlocked; the rest show as locked with a condition.
-    expect(find.text(' 1 / 7'), findsOneWidget);
-    // Pull the summary sheet up to see the collection.
-    await tester.drag(find.text('基地の成長'), const Offset(0, -900));
-    await frames();
-    expect(find.text('夜の街明かり'), findsOneWidget);
-    expect(find.textContaining('解放条件：'), findsWidgets);
-
-    await tester.drag(find.text('基地の成長'), const Offset(0, 900));
-    await frames();
-
+    expect(find.text('1 / 7'), findsOneWidget);
+    expect(find.text('1 / 5'), findsOneWidget, reason: 'first monument stands from the start');
     // One-finger horizontal drag turns the planet.
     final scene = tester
         .widgetList<GameWidget>(find.byWidgetPredicate((w) => w is GameWidget))
@@ -87,6 +79,16 @@ void main() {
     await tester.tap(find.text('全体'));
     await frames();
     expect(zoom(), closeTo(1, 0.01));
+
+    // Pull the summary sheet up to see the collection.
+    await tester.drag(find.text('基地の成長'), const Offset(0, -900));
+    await frames();
+    expect(find.text('テラノヴァ着陸記念碑'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('夜の街明かり'), 200,
+        scrollable: find.byType(Scrollable).last);
+    expect(find.text('夜の街明かり'), findsOneWidget);
+    expect(find.textContaining('解放条件：'), findsWidgets);
+
 
     await tester.tap(find.byTooltip('閉じる'));
     await frames();

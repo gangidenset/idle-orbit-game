@@ -30,8 +30,11 @@ class MessageEvent extends GameEvent {
 }
 
 class PlanetUnlockedEvent extends GameEvent {
-  PlanetUnlockedEvent(this.planet);
+  PlanetUnlockedEvent(this.planet, {this.newMonument = false});
   final PlanetConfig planet;
+
+  /// First time ever on this planet: its monument now stands on the base.
+  final bool newMonument;
 }
 
 class OfflineRewardEvent extends GameEvent {
@@ -346,11 +349,13 @@ class GameController extends ChangeNotifier {
   }
 
   bool unlockPlanet(String id) {
+    final monumentsBefore = visuals.monuments(state).length;
     if (!engine.unlockPlanet(state, id)) return false;
+    final newMonument = visuals.monuments(state).length > monumentsBefore;
     final p = config.planet(id);
     analytics.logEvent(AnalyticsEvents.planetUnlock,
         {'planet': id, 'index': config.planetIndex(id), 'prestige': state.stat(Metric.prestigeCount).toInt()});
-    _emit(PlanetUnlockedEvent(p));
+    _emit(PlanetUnlockedEvent(p, newMonument: newMonument));
     _commit();
     return true;
   }

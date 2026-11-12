@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../config/balance_config.dart';
 import '../model/game_state.dart';
 import 'game_engine.dart';
@@ -14,9 +16,12 @@ class Evolution {
 
 /// Snapshot of what the base looks like, used to detect changes.
 class BaseLook {
-  const BaseLook(this.tiers, this.decorations);
+  const BaseLook(this.tiers, this.decorations, [this.monuments = const {}]);
   final Map<String, int> tiers;
   final Set<String> decorations;
+
+  /// Planet ids whose monument stands.
+  final Set<String> monuments;
 }
 
 /// How the base *looks*: facility tiers and unlocked decorations.
@@ -71,7 +76,19 @@ class VisualSystem {
   BaseLook look(GameState s) => BaseLook(
         {for (final f in config.facilities) f.id: tierFor(s.facilityLevel(f.id))},
         activeDecorations(s).map((d) => d.id).toSet(),
+        monuments(s).map((p) => p.id).toSet(),
       );
+
+  /// Monuments standing on the base: one per planet ever reached, in order.
+  /// Based on the most planets ever unlocked, so warps never remove them.
+  /// The first planet's monument stands from the start.
+  List<PlanetConfig> monuments(GameState s) {
+    final reached = math.max(
+      math.max(1, s.stat('maxPlanetsUnlocked').toInt()),
+      s.unlockedPlanets.length,
+    );
+    return config.planets.take(reached).toList();
+  }
 
   /// Facilities whose tier went up between two looks.
   List<Evolution> evolutions(BaseLook before, BaseLook after) => [

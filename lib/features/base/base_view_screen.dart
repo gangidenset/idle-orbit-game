@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flame/game.dart' show GameWidget;
-import 'package:flutter/gestures.dart' show PointerDeviceKind, PointerScrollEvent;
+import 'package:flutter/gestures.dart'
+    show PointerDeviceKind, PointerScrollEvent;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -100,7 +101,11 @@ class _BaseViewScreenState extends State<BaseViewScreen>
   /// Planet radius on screen, so a drag across the planet turns it about
   /// as far as the finger moved along its surface.
   double get _screenRadius {
-    final (_, r) = OrbitScene.planetGeometry(_viewport, centerY: _planetY, radius: _planetR);
+    final (_, r) = OrbitScene.planetGeometry(
+      _viewport,
+      centerY: _planetY,
+      radius: _planetR,
+    );
     return r * _currentScale;
   }
 
@@ -122,7 +127,9 @@ class _BaseViewScreenState extends State<BaseViewScreen>
   }
 
   void _onScaleEnd(ScaleEndDetails d) {
-    if (_pointers < 2) _scene.fling(d.velocity.pixelsPerSecond.dx / _screenRadius);
+    if (_pointers < 2) {
+      _scene.fling(d.velocity.pixelsPerSecond.dx / _screenRadius);
+    }
   }
 
   /// Zooms by [factor] keeping [focal] fixed, then pans; clamped to 1x-5x
@@ -195,7 +202,10 @@ class _BaseViewScreenState extends State<BaseViewScreen>
                   // Mouse wheel / trackpad scroll zooms at the cursor.
                   onPointerSignal: (e) {
                     if (e is PointerScrollEvent) {
-                      _zoomAt(e.localPosition, math.exp(-e.scrollDelta.dy / 400));
+                      _zoomAt(
+                        e.localPosition,
+                        math.exp(-e.scrollDelta.dy / 400),
+                      );
                     }
                   },
                   child: GestureDetector(
@@ -347,6 +357,7 @@ class _GrowthSheet extends StatelessWidget {
       (a, f) => a + v.tierFor(s.facilityLevel(f.id)),
     );
     final maxStars = c.config.facilities.length * v.maxTier();
+    final built = {for (final p in v.monuments(s)) p.id};
 
     return DraggableScrollableSheet(
       initialChildSize: _BaseViewScreenState._sheetCollapsed,
@@ -390,34 +401,33 @@ class _GrowthSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              // Summary row: what someone checking progress wants first.
+              // Summary: what someone checking progress wants first.
+              const Text(
+                '基地の成長',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
               Row(
                 children: [
-                  const Text(
-                    '基地の成長',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  _Stat(
+                    icon: Icons.star,
+                    color: OrbitColors.accent,
+                    label: '施設の★',
+                    value: '$totalStars / $maxStars',
                   ),
-                  const Spacer(),
-                  const Icon(Icons.star, size: 16, color: OrbitColors.accent),
-                  Text(
-                    ' $totalStars / $maxStars',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Icon(
-                    Icons.auto_awesome,
-                    size: 16,
+                  const SizedBox(width: 8),
+                  _Stat(
+                    icon: Icons.auto_awesome,
                     color: OrbitColors.primary,
+                    label: '装飾',
+                    value: '${active.length} / ${decos.length}',
                   ),
-                  Text(
-                    ' ${active.length} / ${decos.length}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
+                  const SizedBox(width: 8),
+                  _Stat(
+                    icon: Icons.account_balance,
+                    color: OrbitColors.success,
+                    label: '記念碑',
+                    value: '${built.length} / ${c.config.planets.length}',
                   ),
                 ],
               ),
@@ -436,6 +446,18 @@ class _GrowthSheet extends StatelessWidget {
               ),
               for (final f in c.config.facilities)
                 _FacilityRow(facility: f, level: s.facilityLevel(f.id)),
+              const SizedBox(height: 14),
+              const Text(
+                '開拓記念碑（裏側・ワープしても残ります）',
+                style: TextStyle(fontSize: 13, color: OrbitColors.textDim),
+              ),
+              const SizedBox(height: 6),
+              for (final (i, p) in c.config.planets.indexed)
+                _MonumentRow(
+                  planet: p,
+                  built: built.contains(p.id),
+                  isNext: i == built.length,
+                ),
               const SizedBox(height: 14),
               const Text(
                 '装飾コレクション',
@@ -511,6 +533,111 @@ class _FacilityRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Stat extends StatelessWidget {
+  const _Stat({
+    required this.icon,
+    required this.color,
+    required this.label,
+    required this.value,
+  });
+  final IconData icon;
+  final Color color;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: OrbitColors.surfaceHigh,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 14, color: color),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: OrbitColors.textDim,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFeatures: [FontFeature.tabularFigures()],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _MonumentRow extends StatelessWidget {
+  const _MonumentRow({
+    required this.planet,
+    required this.built,
+    required this.isNext,
+  });
+  final PlanetConfig planet;
+  final bool built;
+
+  /// Only the next planet is named; later ones stay a mystery.
+  final bool isNext;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(
+      children: [
+        Icon(
+          built ? Icons.account_balance : Icons.lock_outline,
+          size: 20,
+          color: built ? Color(planet.colorValue) : OrbitColors.textDim,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                built ? planet.monumentName : '？？？',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: built ? null : OrbitColors.textDim,
+                ),
+              ),
+              Text(
+                built
+                    ? planet.name
+                    : isNext
+                    ? '解放条件：${planet.name} を開拓'
+                    : '解放条件：さらに先の惑星を開拓',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: OrbitColors.textDim,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class _DecorationRow extends StatelessWidget {

@@ -202,6 +202,7 @@
   "planets": [
     {
       "id": "terra_nova",
+      "monumentName": "テラノヴァ着陸記念碑",
       "name": "始まりの惑星 テラノヴァ",
       "description": "穏やかな岩石惑星。すべてがここから始まる。",
       "color": "#4FA3E0",
@@ -211,6 +212,7 @@
     },
     {
       "id": "glacies",
+      "monumentName": "グラシエ開拓記念碑",
       "name": "氷結惑星 グラシエ",
       "description": "氷の下に眠るエネルギー鉱脈。滞在中はエネルギー生産 ×2。",
       "color": "#9EE7F5",
@@ -220,6 +222,7 @@
     },
     {
       "id": "dunebell",
+      "monumentName": "デューンベル開拓記念碑",
       "name": "砂漠惑星 デューンベル",
       "description": "鉱脈が地表に露出した砂の惑星。滞在中は鉱石生産 ×2。",
       "color": "#E3B261",
@@ -229,6 +232,7 @@
     },
     {
       "id": "vulcara",
+      "monumentName": "ヴァルカラ開拓記念碑",
       "name": "火山惑星 ヴァルカラ",
       "description": "溶岩の熱で精錬が加速する。滞在中は合金生産 ×2。",
       "color": "#F26B3A",
@@ -238,6 +242,7 @@
     },
     {
       "id": "unknown",
+      "monumentName": "未知の惑星 到達記念碑",
       "name": "未知の惑星 ？？？",
       "description": "観測不能な信号を発する謎の惑星。滞在中は研究 ×2。",
       "color": "#B07CFF",

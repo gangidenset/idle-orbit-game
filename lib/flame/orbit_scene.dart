@@ -5,6 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 
+import '../core/logger.dart';
+
 /// One facility's visual state.
 class StructureData {
   const StructureData({
@@ -22,6 +24,16 @@ class StructureData {
   final int? evolvedAtMs;
 }
 
+/// A monument on the far side of the base (one per planet ever reached).
+class MonumentData {
+  const MonumentData({required this.planetId, required this.color, required this.latest});
+  final String planetId;
+  final Color color;
+
+  /// The most recent monument gets a glowing ring.
+  final bool latest;
+}
+
 /// What the scene needs to know about the game. Pulled every frame so the
 /// scene never holds stale state and never mutates the game.
 class SceneData {
@@ -34,6 +46,7 @@ class SceneData {
     required this.specialDrones,
     required this.boosted,
     required this.oreRate,
+    this.monuments = const [],
   });
 
   final String planetId;
@@ -44,6 +57,9 @@ class SceneData {
   final int specialDrones;
   final bool boosted;
   final double oreRate;
+
+  /// In planet order; index i stands at monument slot i.
+  final List<MonumentData> monuments;
 }
 
 /// Optional hand-made / AI-made art. Any file that exists replaces the
@@ -338,8 +354,29 @@ class _Base extends Component with HasGameReference<OrbitScene> {
   /// Rim angle between neighbouring facilities in the front view.
   static const _slotSpread = 0.30;
 
-  /// Longitudes of the surface decorations on the far side of the planet.
-  static const _decoLongitudes = {'comm_array': math.pi - 0.45, 'space_elevator': math.pi + 0.45};
+  /// Longitudes of the surface decorations: at the two ends of the far side,
+  /// leaving its middle for the monuments.
+  static const _decoLongitudes = {'comm_array': math.pi - 1.25, 'space_elevator': math.pi + 1.25};
+
+  /// Monument slot i (0-4) sits in the middle of the far side.
+  static double _monumentLongitude(int i) => math.pi + (i - 2) * 0.4;
+
+  final Set<String> _reported = {};
+
+  /// Draws one object; if it throws, the canvas is restored and the rest of
+  /// the scene still draws. Each distinct error is logged once.
+  void _guarded(Canvas canvas, void Function() draw) {
+    final depth = canvas.getSaveCount();
+    try {
+      draw();
+    } catch (e, st) {
+      while (canvas.getSaveCount() > depth) {
+        canvas.restore();
+      }
+      _fill.shader = null;
+      if (_reported.add('$e')) log.error('Scene object failed to draw', e, st);
+    }
+  }
 
   _RimSpot _spot(double longitude) {
     final a = longitude + game.yaw;
@@ -406,6 +443,10 @@ class _Base extends Component with HasGameReference<OrbitScene> {
         },
       ));
     }
+    for (var i = 0; i < d.monuments.length; i++) {
+      final m = d.monuments[i];
+      items.add((_spot(_monumentLongitude(i)), (spot) => _monument(canvas, rimPoint(spot.angle), spot.angle, spot.scale, m)));
+    }
     if (has('comm_array')) {
       items.add((_spot(_decoLongitudes['comm_array']!), (spot) => _commArray(canvas, rimPoint(spot.angle), spot.angle, spot.scale)));
     }
@@ -424,7 +465,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       if (spot.front) continue;
       final alpha = 0.45 + 0.55 * (1 + spot.depth);
       canvas.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, alpha.clamp(0.45, 1.0)));
-      draw(spot);
+      _guarded(canvas, () => draw(spot));
       canvas.restore();
     }
 
@@ -433,7 +474,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     if (has('aurora')) _aurora(canvas, center, r);
 
     for (final (spot, draw) in items) {
-      if (spot.front) draw(spot);
+      if (spot.front) _guarded(canvas, () => draw(spot));
     }
 
     for (final (angle, life) in _puffs) {
@@ -790,6 +831,69 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     for (var i = 0; i < dashes; i += 2) {
       canvas.drawArc(Rect.fromCircle(center: Offset.zero, radius: r * 1.65),
           i * math.pi * 2 / dashes, math.pi * 2 / dashes, false, _stroke);
+    }
+    canvas.restore();
+  }
+
+  /// Obelisk on a pedestal with a small orb in the planet's colour.
+  void _monument(Canvas canvas, Offset base, double angle, double scale, MonumentData m) {
+    canvas.save();
+    canvas.translate(base.dx, base.dy);
+    canvas.rotate(angle + math.pi / 2);
+    canvas.scale(scale);
+    final sprite = game.art['deco_monument_${m.planetId}'];
+    if (sprite != null) {
+      const h = 46.0;
+      final w = h * sprite.width / sprite.height;
+      canvas.drawImageRect(sprite, Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
+          Rect.fromLTWH(-w / 2, -h + 2, w, h), _imagePaint);
+      canvas.restore();
+      return;
+    }
+    // Pedestal.
+    _fill.color = const Color(0xFF3A4A78);
+    canvas.drawPath(
+        Path()
+          ..moveTo(-9, 1)
+          ..lineTo(9, 1)
+          ..lineTo(6, -5)
+          ..lineTo(-6, -5)
+          ..close(),
+        _fill);
+    // Obelisk: light face and shaded face.
+    _fill.color = const Color(0xFFE8EAF2);
+    canvas.drawPath(
+        Path()
+          ..moveTo(-4, -5)
+          ..lineTo(0, -5)
+          ..lineTo(0, -30)
+          ..lineTo(-2.5, -28)
+          ..close(),
+        _fill);
+    _fill.color = const Color(0xFFB4BBD0);
+    canvas.drawPath(
+        Path()
+          ..moveTo(0, -5)
+          ..lineTo(4, -5)
+          ..lineTo(2.5, -28)
+          ..lineTo(0, -30)
+          ..close(),
+        _fill);
+    // Planet orb with glow.
+    const orb = Offset(0, -36);
+    _fill.shader = Gradient.radial(orb, 10, [m.color.withValues(alpha: 0.55), m.color.withValues(alpha: 0)]);
+    canvas.drawCircle(orb, 10, _fill);
+    _fill.shader = Gradient.radial(orb.translate(-1.5, -1.5), 6,
+        [Color.lerp(m.color, const Color(0xFFFFFFFF), 0.5)!, m.color, Color.lerp(m.color, const Color(0xFF000000), 0.4)!],
+        [0, 0.55, 1]);
+    canvas.drawCircle(orb, 4.5, _fill);
+    _fill.shader = null;
+    if (m.latest) {
+      final pulse = (math.sin(_t * 2.4) + 1) / 2;
+      _stroke
+        ..strokeWidth = 1.2
+        ..color = const Color(0xFFFFC857).withValues(alpha: 0.5 + 0.4 * pulse);
+      canvas.drawOval(Rect.fromCenter(center: orb, width: 18 + 3 * pulse, height: 6), _stroke);
     }
     canvas.restore();
   }

@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -65,5 +66,26 @@ void main() {
       expect(tester.takeException(), isNull, reason: 'yaw step $k');
     }
     expect(errors, isEmpty);
+
+    // The planet must stay solid at every angle. (Shared paints left
+    // translucent by the previous object once made it see-through, at some
+    // angles only.) Render to an image and compare the planet's centre.
+    final brightness = <double>[];
+    for (var k = 0; k < 12; k++) {
+      scene.yaw = k / 12 * 2 * math.pi;
+      final recorder = ui.PictureRecorder();
+      scene.render(Canvas(recorder));
+      final picture = recorder.endRecording();
+      final value = await tester.runAsync(() async {
+        final image = await picture.toImage(390, 600);
+        final data = await image.toByteData();
+        // Planet centre: x = 0.5 w, y = 0.6 h; sample a little below it.
+        final i = ((380 * 390) + 195) * 4;
+        return (data!.getUint8(i) + data.getUint8(i + 1) + data.getUint8(i + 2)) / 3;
+      });
+      brightness.add(value!);
+    }
+    final lo = brightness.reduce(math.min), hi = brightness.reduce(math.max);
+    expect(lo / hi, greaterThan(0.8), reason: 'planet brightness by angle: $brightness');
   });
 }

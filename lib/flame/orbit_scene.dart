@@ -102,6 +102,10 @@ class ArtLibrary {
   }
 }
 
+/// Opaque colour for paints that use a shader: a Paint's colour alpha
+/// multiplies its shader (and images), so it must be reset to opaque.
+const Color _opaque = Color(0xFFFFFFFF);
+
 /// Paint for drawing art images: always opaque, smooth downscaling.
 /// (A Paint's colour alpha multiplies drawImageRect, so shape paints whose
 /// colour was last set semi-transparent must never be reused for images.)
@@ -294,6 +298,7 @@ class _Backdrop extends Component with HasGameReference<OrbitScene> {
       final k = _shootT / 0.8;
       final head = from + Offset(-180 * k, 90 * k);
       _p
+        ..color = _opaque
         ..shader = Gradient.linear(head, head + const Offset(40, -20),
             [const Color(0xFFFFFFFF).withValues(alpha: 1 - k), const Color(0x00FFFFFF)])
         ..strokeWidth = 1.6;
@@ -369,6 +374,16 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     final depth = canvas.getSaveCount();
     try {
       draw();
+      if (canvas.getSaveCount() != depth) {
+        // Left transformed or layered: whatever is drawn next (e.g. the
+        // planet) would be affected. Repair and report.
+        while (canvas.getSaveCount() > depth) {
+          canvas.restore();
+        }
+        if (_reported.add('unbalanced save')) {
+          log.error('Scene object left the canvas unbalanced', StateError('unbalanced save'));
+        }
+      }
     } catch (e, st) {
       while (canvas.getSaveCount() > depth) {
         canvas.restore();
@@ -498,7 +513,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
   void _planet(Canvas canvas, SceneData d, Offset c, double r) {
     final sprite = game.art['planet_${d.planetId}'];
     // Atmosphere glow.
-    _fill.shader = Gradient.radial(c, r * 1.45, [
+    _fill..color = _opaque..shader = Gradient.radial(c, r * 1.45, [
       d.planetColor.withValues(alpha: d.boosted ? 0.5 : 0.28),
       d.planetColor.withValues(alpha: 0),
     ]);
@@ -519,7 +534,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
           Rect.fromCircle(center: c, radius: r), _imagePaint);
       return;
     }
-    _fill.shader = Gradient.radial(
+    _fill..color = _opaque..shader = Gradient.radial(
       c.translate(-r * 0.35, -r * 0.4),
       r * 1.5,
       [
@@ -561,7 +576,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       canvas.drawOval(Rect.fromCenter(center: p, width: w * facing, height: h), _fill);
     }
     // Night side (lower right).
-    _fill.shader = Gradient.radial(c.translate(r * 0.9, r * 0.7), r * 1.4,
+    _fill..color = _opaque..shader = Gradient.radial(c.translate(r * 0.9, r * 0.7), r * 1.4,
         [const Color(0xFF000000).withValues(alpha: 0.55), const Color(0x00000000)]);
     canvas.drawCircle(c, r, _fill);
     _fill.shader = null;
@@ -586,7 +601,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       canvas.drawImageRect(tex, src, Rect.fromLTWH(c.dx - r + dx, c.dy - r, w, h), _imagePaint);
     }
     // Same lighting as the procedural planet so textures look round.
-    _fill.shader = Gradient.radial(c.translate(-r * 0.35, -r * 0.4), r * 1.6, [
+    _fill..color = _opaque..shader = Gradient.radial(c.translate(-r * 0.35, -r * 0.4), r * 1.6, [
       const Color(0xFFFFFFFF).withValues(alpha: 0.18),
       const Color(0x00000000),
       const Color(0xFF000000).withValues(alpha: 0.6),
@@ -637,7 +652,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     // Main body.
     final bw = 5.0 + t * 1.6;
     final bh = 8.0 + t * 4.2;
-    _fill.shader = Gradient.linear(Offset(-bw, 0), Offset(bw, 0), [Color.lerp(col, const Color(0xFFFFFFFF), 0.25)!, dark]);
+    _fill..color = _opaque..shader = Gradient.linear(Offset(-bw, 0), Offset(bw, 0), [Color.lerp(col, const Color(0xFFFFFFFF), 0.25)!, dark]);
     canvas.drawRRect(RRect.fromRectAndCorners(Rect.fromLTWH(-bw, -bh, bw * 2, bh),
         topLeft: Radius.circular(t >= 3 ? bw : 2), topRight: Radius.circular(t >= 3 ? bw : 2)), _fill);
     _fill.shader = null;
@@ -670,7 +685,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     // Energy beam from tier 4.
     if (t >= 4) {
       final beamH = 18.0 + t * 5;
-      _fill.shader = Gradient.linear(Offset(0, -bh), Offset(0, -bh - beamH),
+      _fill..color = _opaque..shader = Gradient.linear(Offset(0, -bh), Offset(0, -bh - beamH),
           [col.withValues(alpha: 0.55 * (0.6 + 0.4 * blink)), col.withValues(alpha: 0)]);
       canvas.drawRect(Rect.fromLTWH(-1.5, -bh - beamH, 3, beamH), _fill);
       _fill.shader = null;
@@ -687,7 +702,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
     // Radiant halo at the top tier.
     if (t >= 6) {
       final pulse = (math.sin(_t * 2.2 + slot) + 1) / 2;
-      _fill.shader = Gradient.radial(Offset(0, -bh * 0.6), bh * (0.9 + 0.2 * pulse),
+      _fill..color = _opaque..shader = Gradient.radial(Offset(0, -bh * 0.6), bh * (0.9 + 0.2 * pulse),
           [col.withValues(alpha: 0.35), col.withValues(alpha: 0)]);
       canvas.drawCircle(Offset(0, -bh * 0.6), bh * (0.9 + 0.2 * pulse), _fill);
       _fill.shader = null;
@@ -709,7 +724,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
       ..strokeWidth = 3 * (1 - k)
       ..color = col.withValues(alpha: 1 - k);
     canvas.drawCircle(at, 6 + k * 46, _stroke);
-    _fill.shader = Gradient.radial(at, 30, [const Color(0xFFFFFFFF).withValues(alpha: (1 - k) * 0.8), const Color(0x00FFFFFF)]);
+    _fill..color = _opaque..shader = Gradient.radial(at, 30, [const Color(0xFFFFFFFF).withValues(alpha: (1 - k) * 0.8), const Color(0x00FFFFFF)]);
     canvas.drawCircle(at, 30, _fill);
     _fill.shader = null;
   }
@@ -728,7 +743,7 @@ class _Base extends Component with HasGameReference<OrbitScene> {
           Rect.fromCircle(center: pos, radius: mr), _imagePaint);
       return;
     }
-    _fill.shader = Gradient.radial(pos.translate(-mr * 0.4, -mr * 0.4), mr * 1.6,
+    _fill..color = _opaque..shader = Gradient.radial(pos.translate(-mr * 0.4, -mr * 0.4), mr * 1.6,
         [const Color(0xFFE8E4DA), const Color(0xFF8D877C), const Color(0xFF2A2824)], [0, 0.5, 1]);
     canvas.drawCircle(pos, mr, _fill);
     _fill.shader = null;
@@ -881,9 +896,9 @@ class _Base extends Component with HasGameReference<OrbitScene> {
         _fill);
     // Planet orb with glow.
     const orb = Offset(0, -36);
-    _fill.shader = Gradient.radial(orb, 10, [m.color.withValues(alpha: 0.55), m.color.withValues(alpha: 0)]);
+    _fill..color = _opaque..shader = Gradient.radial(orb, 10, [m.color.withValues(alpha: 0.55), m.color.withValues(alpha: 0)]);
     canvas.drawCircle(orb, 10, _fill);
-    _fill.shader = Gradient.radial(orb.translate(-1.5, -1.5), 6,
+    _fill..color = _opaque..shader = Gradient.radial(orb.translate(-1.5, -1.5), 6,
         [Color.lerp(m.color, const Color(0xFFFFFFFF), 0.5)!, m.color, Color.lerp(m.color, const Color(0xFF000000), 0.4)!],
         [0, 0.55, 1]);
     canvas.drawCircle(orb, 4.5, _fill);

@@ -89,11 +89,15 @@ class ArtLibrary {
     try {
       final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
       for (final path in manifest.listAssets()) {
-        if (!path.startsWith('assets/art/') || !path.endsWith('.png')) continue;
+        // PNG for sprites with transparency, JPEG for opaque art
+        // (backgrounds, planet surfaces).
+        if (!path.startsWith('assets/art/')) continue;
+        final ext = path.endsWith('.png') || path.endsWith('.jpg') ? 4 : 0;
+        if (ext == 0) continue;
         final data = await rootBundle.load(path);
         final codec = await instantiateImageCodec(data.buffer.asUint8List());
         final frame = await codec.getNextFrame();
-        final name = path.substring('assets/art/'.length, path.length - 4);
+        final name = path.substring('assets/art/'.length, path.length - ext);
         _images[name] = frame.image;
       }
     } catch (_) {
@@ -285,6 +289,12 @@ class _Backdrop extends Component with HasGameReference<OrbitScene> {
     final bg = game.art['bg_${d.planetId}'];
     if (bg != null) {
       _drawCover(canvas, bg, Offset.zero & size, _imagePaint);
+      // Calm vivid art a little so the planet and buildings stay the focus
+      // and long sessions are easy on the eyes.
+      _p
+        ..shader = null
+        ..color = const Color(0xFF070E22).withValues(alpha: 0.22);
+      canvas.drawRect(Offset.zero & size, _p);
     } else {
       if (_static == null || _builtFor != size || _builtPlanet != d.planetId) _build(size, d);
       canvas.drawPicture(_static!);

@@ -16,10 +16,13 @@ void main() {
     log.onError = (e, _, msg) => errors.add('$msg: $e');
     addTearDown(() => log.onError = null);
 
+    // terra_nova has a surface texture in assets/art (drawn while turning);
+    // the brightness check below switches to a planet without art.
+    var planetId = 'terra_nova';
     const colors = [Color(0xFFD9B38C), Color(0xFFFFD54F), Color(0xFF80DEEA), Color(0xFFCE93D8), Color(0xFF90A4AE)];
     final scene = OrbitScene(
       () => SceneData(
-        planetId: 'terra_nova',
+        planetId: planetId,
         planetColor: const Color(0xFF4FA3E0),
         structures: [
           for (var i = 0; i < 5; i++)
@@ -70,6 +73,8 @@ void main() {
     // The planet must stay solid at every angle. (Shared paints left
     // translucent by the previous object once made it see-through, at some
     // angles only.) Render to an image and compare the planet's centre.
+    // Uses a planet without art so its surface is uniform.
+    planetId = 'plain_test_planet';
     final brightness = <double>[];
     for (var k = 0; k < 12; k++) {
       scene.yaw = k / 12 * 2 * math.pi;

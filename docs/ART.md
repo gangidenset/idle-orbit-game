@@ -51,6 +51,17 @@ python3 tool/clean_sprite.py 元画像.png assets/art/facility_ore_mine_t1.png
 ## 取り込み済み
 
 - 鉱石採掘施設 1〜6段階（`facility_ore_mine_t1`〜`t6`）
+- 背景 5惑星（`bg_*.jpg`）
+- 惑星の表面 5惑星（`planet_tex_*.jpg`）
+
+不透明な画像（背景・惑星の表面）は JPEG で取り込む：
+
+```bash
+python3 tool/prepare_art.py texture 元画像 assets/art/planet_tex_glacies.jpg
+python3 tool/prepare_art.py background 元画像 assets/art/bg_glacies.jpg
+```
+
+`texture` は左右のつなぎ目を自動で消す（画像AIの「シームレス」指定は完全には守られないため）。背景は描画時に薄く紺を重ね、惑星と建物が主役になるようにしている。
 
 ## 小さく表示したときの見やすさ（実機サイズで検証済み）
 

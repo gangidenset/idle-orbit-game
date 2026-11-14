@@ -55,6 +55,24 @@ class _BaseScreenState extends State<BaseScreen> {
                 ),
               ),
             ),
+            // Keeps the planet name readable over bright backgrounds.
+            const Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 72,
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xCC070E22), Color(0x00070E22)],
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Positioned(
               right: 10,
               bottom: 8,

@@ -98,6 +98,15 @@ class _HomeShellState extends State<HomeShell> {
           stars: evolution.tier,
           maxStars: c.visuals.maxTier(),
         ));
+      case ResearchCompletedEvent(:final node, :final level):
+        playSfx(context, Sfx.evolve);
+        banners.show(BannerItem(
+          icon: Icons.science,
+          color: OrbitColors.resource(ResourceType.research),
+          label: '研究完了',
+          title: '${node.name} Lv.$level',
+          subtitle: node.description,
+        ));
       case DecorationUnlockedEvent(:final decoration):
         playSfx(context, Sfx.evolve);
         banners.show(BannerItem(
@@ -119,7 +128,7 @@ class _HomeShellState extends State<HomeShell> {
       builder: (ctx) => AlertDialog(
         icon: const Icon(Icons.notifications_active, color: OrbitColors.accent),
         title: const Text('基地からのお知らせを受け取りますか？'),
-        content: const Text('保管庫が満杯になった時と、放置報酬が上限に達した時だけお知らせします。'
+        content: const Text('保管庫が満杯になった時、研究が完了した時、放置報酬が上限に達した時だけお知らせします。'
             '\n（設定画面からいつでも変更できます）'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('今はしない')),

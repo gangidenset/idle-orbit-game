@@ -50,6 +50,9 @@ class OfflineCalculator {
     }
 
     final r = simulate(s, from, elapsed);
+    // Research runs on credited time (same cap/anti-tamper as rewards).
+    final done = engine.advanceResearch(s, r.creditedSeconds.toDouble());
+    if (done != null) r.researchDone.add(done);
     s.pendingOfflineReward = _merge(s.pendingOfflineReward, r);
     return s.pendingOfflineReward;
   }
@@ -89,13 +92,15 @@ class OfflineCalculator {
 
   OfflineReward _merge(OfflineReward? a, OfflineReward b) {
     if (a == null) return b;
-    return OfflineReward(
+    final merged = OfflineReward(
       elapsedSeconds: a.elapsedSeconds + b.elapsedSeconds,
       creditedSeconds: a.creditedSeconds + b.creditedSeconds,
       gained: a.gained + b.gained,
       capped: a.capped || b.capped,
       clockAnomaly: a.clockAnomaly || b.clockAnomaly,
     );
+    merged.researchDone = [...a.researchDone, ...b.researchDone];
+    return merged;
   }
 
   /// Claims the pending reward. [multiplier] is 2 after a rewarded ad.

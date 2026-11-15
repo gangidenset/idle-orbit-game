@@ -132,6 +132,7 @@ void main() {
       final before = engine.snapshot(s, nowMs: t0).gross[ResourceType.ore];
       expect(engine.doResearch(s, 'drill_tech'), isTrue);
       expect(s.resources[ResourceType.research], closeTo(0, 1e-9));
+      expect(engine.advanceResearch(s, engine.researchDuration('drill_tech', 0)), 'drill_tech');
       expect(engine.snapshot(s, nowMs: t0).gross[ResourceType.ore],
           closeTo(before * 1.15, 1e-9));
     });

@@ -73,7 +73,11 @@ class OfflineReward {
   /// True when the device clock appeared to move backwards.
   final bool clockAnomaly;
 
+  /// Research nodes that finished while away.
+  List<String> researchDone = [];
+
   Map<String, dynamic> toJson() => {
+        'researchDone': researchDone,
         'elapsedSeconds': elapsedSeconds,
         'creditedSeconds': creditedSeconds,
         'gained': gained.toJson(),
@@ -87,7 +91,7 @@ class OfflineReward {
         gained: ResourceBag.fromJson(Map<String, dynamic>.from(j['gained'] as Map)),
         capped: j['capped'] as bool? ?? false,
         clockAnomaly: j['clockAnomaly'] as bool? ?? false,
-      );
+      )..researchDone = ((j['researchDone'] as List?) ?? const []).cast<String>().toList();
 }
 
 class DailyState {
@@ -194,6 +198,8 @@ class GameState {
     required this.unlockedPlanets,
     required this.activePlanet,
     required this.research,
+    this.activeResearch,
+    this.researchProgress = 0,
     this.prestigePoints = 0,
     Map<String, int>? prestigeUpgrades,
     Map<String, double>? stats,
@@ -233,8 +239,16 @@ class GameState {
   Map<String, int> robots;
   Set<String> unlockedPlanets;
   String activePlanet;
-  Map<String, int> research;
   Map<String, double> runStats;
+
+  // ---- research (kept across warps) ----
+  Map<String, int> research;
+
+  /// Node being researched, or null. Its cost is already paid.
+  String? activeResearch;
+
+  /// Seconds of research done on [activeResearch].
+  double researchProgress;
 
   // ---- meta (persist across prestige) ----
   double prestigePoints;
@@ -274,6 +288,8 @@ class GameState {
         'unlockedPlanets': unlockedPlanets.toList(),
         'activePlanet': activePlanet,
         'research': research,
+        'activeResearch': activeResearch,
+        'researchProgress': researchProgress,
         'runStats': runStats,
         'prestigePoints': prestigePoints,
         'prestigeUpgrades': prestigeUpgrades,
@@ -303,6 +319,8 @@ class GameState {
             ((j['unlockedPlanets'] as List?) ?? const []).cast<String>().toSet(),
         activePlanet: j['activePlanet'] as String,
         research: _intMap(j['research']),
+        activeResearch: j['activeResearch'] as String?,
+        researchProgress: (j['researchProgress'] as num?)?.toDouble() ?? 0,
         runStats: _doubleMap(j['runStats']),
         prestigePoints: (j['prestigePoints'] as num?)?.toDouble() ?? 0,
         prestigeUpgrades: _intMap(j['prestigeUpgrades']),

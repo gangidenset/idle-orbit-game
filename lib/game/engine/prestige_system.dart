@@ -37,7 +37,8 @@ class PrestigeSystem {
     s.addStat(Metric.prestigeCount, 1);
 
     // Reset run data only. Meta data (prestige, stats, missions,
-    // achievements, purchases, settings, boosts) is preserved.
+    // achievements, purchases, settings, boosts, research) is preserved.
+    // Research takes real time, so redoing it every warp would be a chore.
     s.resources = fresh.resources;
     s.facilities = fresh.facilities;
     s.robots = {
@@ -46,7 +47,6 @@ class PrestigeSystem {
     };
     s.unlockedPlanets = fresh.unlockedPlanets;
     s.activePlanet = fresh.activePlanet;
-    s.research = {};
     s.runStats = {};
     s.pendingOfflineReward = null;
 

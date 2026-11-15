@@ -77,6 +77,18 @@ class _OfflineRewardDialogState extends State<_OfflineRewardDialog> {
             const SizedBox(height: 12),
           ],
           RewardList(r.gained),
+          for (final id in r.researchDone)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(children: [
+                const Icon(Icons.science, size: 18, color: OrbitColors.accent),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('留守の間に「${c.config.researchNode(id).name}」の研究が完了しました',
+                      style: const TextStyle(fontSize: 12)),
+                ),
+              ]),
+            ),
         ]),
       ),
       actions: [

@@ -1,5 +1,5 @@
 /// Where a rewarded ad was requested from (for analytics / mediation).
-enum RewardedPlacement { offlineDouble, productionBoost, freeReward }
+enum RewardedPlacement { offlineDouble, productionBoost, freeReward, researchSpeedup }
 
 enum RewardedOutcome {
   /// The user watched the ad and earned the reward.

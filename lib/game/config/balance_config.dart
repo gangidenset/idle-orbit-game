@@ -228,6 +228,8 @@ class UpgradeConfig {
         baseCostAmount = _d(_m(j['baseCost'])[costKey]),
         costGrowth = _d(j['costGrowth'], 1.5),
         maxLevel = _i(j['maxLevel'], 10),
+        baseSeconds = _d(j['baseSeconds']),
+        timeGrowth = _d(j['timeGrowth'], 1),
         grantsPerLevel = ResourceBag.fromJson(_m(j['grantsPerLevel']));
 
   final String id;
@@ -235,6 +237,11 @@ class UpgradeConfig {
   final String description;
   final Effect effect;
   final ResourceBag grantsPerLevel;
+
+  /// Research only: time for level 0 -> 1 (0 = instant), growing by
+  /// [timeGrowth] per level.
+  final double baseSeconds;
+  final double timeGrowth;
   final double baseCostAmount;
   final double costGrowth;
   final int maxLevel;
@@ -445,6 +452,8 @@ class BalanceConfig {
         robots = _l(j['robots']).map(RobotConfig.fromJson).toList(),
         planets = _l(j['planets']).map(PlanetConfig.fromJson).toList(),
         research = _l(j['research']).map((e) => UpgradeConfig.fromJson(e)).toList(),
+        researchMaxSeconds = _d(_m(j['researchTiming'])['maxSecondsPerLevel'], 14400),
+        researchAdSpeedupMinutes = _d(_m(j['researchTiming'])['adSpeedupMinutes'], 30),
         prestige = PrestigeConfig.fromJson(_m(j['prestige'])),
         adBoost = BoostConfig.fromJson(_m(_m(j['boosts'])['ad'])),
         freeRewardCooldownMinutes = _d(_m(j['freeReward'])['cooldownMinutes'], 30),
@@ -479,6 +488,12 @@ class BalanceConfig {
   final List<RobotConfig> robots;
   final List<PlanetConfig> planets;
   final List<UpgradeConfig> research;
+
+  /// Cap on the time one research level takes.
+  final double researchMaxSeconds;
+
+  /// How much one rewarded ad shortens the current research.
+  final double researchAdSpeedupMinutes;
   final PrestigeConfig prestige;
   final BoostConfig adBoost;
   final double freeRewardCooldownMinutes;

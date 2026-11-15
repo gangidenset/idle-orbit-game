@@ -47,7 +47,7 @@ void main() {
       expect(s.prestigePoints, expectedPts);
       expect(s.stat(Metric.prestigePointsEarned), expectedPts);
       expect(s.facilityLevel('ore_mine'), 1);
-      expect(s.researchLevel('drill_tech'), 0);
+      expect(s.researchLevel('drill_tech'), 3, reason: 'research is kept across warps');
       expect(s.robotLevel('miner_bot'), 0);
       expect(s.robotLevel('pioneer_bot'), 3, reason: 'purchased robot kept');
       expect(s.unlockedPlanets, {'terra_nova'});

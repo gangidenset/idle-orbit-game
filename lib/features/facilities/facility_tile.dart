@@ -164,6 +164,7 @@ String blockLabel(UpgradeBlock b) => switch (b) {
       UpgradeBlock.maxLevel => '最大レベル',
       UpgradeBlock.locked => '未解放',
       UpgradeBlock.insufficient => '資源不足',
+      UpgradeBlock.busy => '研究中',
     };
 
 class _TierStars extends StatelessWidget {

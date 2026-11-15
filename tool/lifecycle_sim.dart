@@ -74,6 +74,7 @@ LifecycleResult simulateLifecycle(BalanceConfig config,
       while (t < sessionMinutes * 60) {
         final now = startMs + (t * 1000).round();
         engine.tick(s, 1, nowMs: now);
+        engine.advanceResearch(s, 1);
         t += 1;
         if (t % 5 != 0) continue;
         final p = bot.tryUnlockPlanet(s);

@@ -4,7 +4,7 @@ import '../model/game_state.dart';
 import '../model/resources.dart';
 import 'game_engine.dart';
 
-enum ReminderKind { storageFull, offlineCapReached }
+enum ReminderKind { storageFull, offlineCapReached, researchDone }
 
 class PlannedReminder {
   const PlannedReminder(this.kind, this.delay, this.title, this.body);
@@ -55,6 +55,18 @@ class NotificationPlanner {
         Duration(seconds: firstSeconds.round()),
         '${storage.label}の保管庫が満杯です',
         '生産が止まっています。保管施設を強化して、さらに資源を貯めましょう。',
+      ));
+    }
+
+    // Research finishes on credited offline time, so only within the cap.
+    final researching = s.activeResearch;
+    final left = engine.researchRemaining(s);
+    if (researching != null && left >= minDelay.inSeconds && left <= capSeconds) {
+      out.add(PlannedReminder(
+        ReminderKind.researchDone,
+        Duration(seconds: left.round()),
+        '研究が完了しました',
+        '「${engine.config.researchNode(researching).name}」の研究が終わりました。次の研究を始めましょう。',
       ));
     }
 

@@ -49,10 +49,11 @@ class PrestigeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const _Bullets(title: 'リセットされるもの', color: OrbitColors.danger, items: [
-                  '資源・施設レベル・ロボット・研究・惑星の開拓状況',
+                  '資源・施設レベル・ロボット・惑星の開拓状況',
                 ]),
                 const SizedBox(height: 6),
                 const _Bullets(title: '引き継がれるもの', color: OrbitColors.success, items: [
+                  '研究（進行中の研究も含む）',
                   'ワープポイント・強化・獲得ポイントの生産ボーナス、実績、ミッション、司令官レベル',
                   'ショップで購入した商品・特典ロボット',
                 ]),

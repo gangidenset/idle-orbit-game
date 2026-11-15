@@ -252,6 +252,12 @@
     }
   ],
 
+  "researchTiming": {
+    "_comment": "Research takes time: level L of a node takes baseSeconds * timeGrowth^L, capped. One at a time; progresses offline (credited offline time).",
+    "maxSecondsPerLevel": 14400,
+    "adSpeedupMinutes": 30
+  },
+
   "research": [
     {
       "id": "drill_tech",
@@ -260,7 +266,9 @@
       "effect": { "type": "production", "resource": "ore", "perLevel": 0.15 },
       "baseCost": { "research": 10 },
       "costGrowth": 1.6,
-      "maxLevel": 20
+      "maxLevel": 30,
+      "baseSeconds": 20,
+      "timeGrowth": 1.25
     },
     {
       "id": "solar_tech",
@@ -269,7 +277,9 @@
       "effect": { "type": "production", "resource": "energy", "perLevel": 0.15 },
       "baseCost": { "research": 10 },
       "costGrowth": 1.6,
-      "maxLevel": 20
+      "maxLevel": 30,
+      "baseSeconds": 20,
+      "timeGrowth": 1.25
     },
     {
       "id": "smelt_tech",
@@ -278,7 +288,9 @@
       "effect": { "type": "production", "resource": "alloy", "perLevel": 0.15 },
       "baseCost": { "research": 20 },
       "costGrowth": 1.65,
-      "maxLevel": 20
+      "maxLevel": 30,
+      "baseSeconds": 40,
+      "timeGrowth": 1.25
     },
     {
       "id": "logistics",
@@ -287,7 +299,9 @@
       "effect": { "type": "costReduction", "resource": "all", "perLevel": 0.03 },
       "baseCost": { "research": 40 },
       "costGrowth": 1.9,
-      "maxLevel": 10
+      "maxLevel": 10,
+      "baseSeconds": 120,
+      "timeGrowth": 1.5
     },
     {
       "id": "warehouse",
@@ -296,7 +310,9 @@
       "effect": { "type": "storageCap", "resource": "all", "perLevel": 0.20 },
       "baseCost": { "research": 30 },
       "costGrowth": 1.8,
-      "maxLevel": 15
+      "maxLevel": 20,
+      "baseSeconds": 60,
+      "timeGrowth": 1.3
     },
     {
       "id": "autonomy",
@@ -305,7 +321,9 @@
       "effect": { "type": "offlineCapHours", "resource": "all", "perLevel": 1.0 },
       "baseCost": { "research": 80 },
       "costGrowth": 2.4,
-      "maxLevel": 4
+      "maxLevel": 4,
+      "baseSeconds": 600,
+      "timeGrowth": 2.0
     }
   ],
 

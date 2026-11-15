@@ -60,7 +60,7 @@ class SettingsScreen extends StatelessWidget {
           const _Header('通知'),
           SwitchListTile(
             title: const Text('基地からのお知らせ'),
-            subtitle: const Text('保管庫が満杯の時・放置報酬が上限に達した時のみ（最大2件）'),
+            subtitle: const Text('保管庫が満杯・研究が完了・放置報酬が上限に達した時のみ'),
             value: s.settings.notifications,
             onChanged: c.setNotifications,
           ),

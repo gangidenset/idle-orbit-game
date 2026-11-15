@@ -58,7 +58,7 @@ class ProductionSnapshot {
   }
 }
 
-enum UpgradeBlock { none, maxLevel, locked, insufficient }
+enum UpgradeBlock { none, maxLevel, locked, insufficient, busy }
 
 /// Pure game rules. Has no Flutter dependency and never reads the clock:
 /// every time-dependent call receives `nowMs` so tests are deterministic.
@@ -485,25 +485,64 @@ class GameEngine {
   bool isResearchAvailable(GameState s) =>
       s.facilityLevel('research_lab') > 0 || s.resources[ResourceType.research] > 0;
 
+  /// Seconds that researching [id] from [level] to level+1 takes.
+  double researchDuration(String id, int level) {
+    final n = config.researchNode(id);
+    if (n.baseSeconds <= 0) return 0;
+    return math.min(config.researchMaxSeconds, n.baseSeconds * math.pow(n.timeGrowth, level));
+  }
+
+  /// Seconds left on the current research (0 when idle).
+  double researchRemaining(GameState s) {
+    final id = s.activeResearch;
+    if (id == null) return 0;
+    return math.max(0, researchDuration(id, s.researchLevel(id)) - s.researchProgress);
+  }
+
   UpgradeBlock researchBlock(GameState s, String id) {
     final n = config.researchNode(id);
     final lvl = s.researchLevel(id);
     if (lvl >= n.maxLevel) return UpgradeBlock.maxLevel;
+    if (s.activeResearch != null) return UpgradeBlock.busy;
     if (s.resources[ResourceType.research] + 1e-9 < n.costForLevel(lvl)) {
       return UpgradeBlock.insufficient;
     }
     return UpgradeBlock.none;
   }
 
+  /// Starts researching the next level of [id] (pays its cost). Instant
+  /// nodes complete immediately.
   bool doResearch(GameState s, String id) {
     if (researchBlock(s, id) != UpgradeBlock.none) return false;
     final n = config.researchNode(id);
     s.resources[ResourceType.research] = math.max(
         0.0, s.resources[ResourceType.research] - n.costForLevel(s.researchLevel(id)));
+    s.activeResearch = id;
+    s.researchProgress = 0;
+    if (researchDuration(id, s.researchLevel(id)) <= 0) _completeResearch(s);
+    return true;
+  }
+
+  /// Advances the current research by [seconds]. Returns the node id if it
+  /// completed. Leftover time is not carried over (one research at a time).
+  String? advanceResearch(GameState s, double seconds) {
+    final id = s.activeResearch;
+    if (id == null || seconds <= 0) return null;
+    s.researchProgress += seconds;
+    if (s.researchProgress + 1e-9 >= researchDuration(id, s.researchLevel(id))) {
+      _completeResearch(s);
+      return id;
+    }
+    return null;
+  }
+
+  void _completeResearch(GameState s) {
+    final id = s.activeResearch!;
     s.research[id] = s.researchLevel(id) + 1;
+    s.activeResearch = null;
+    s.researchProgress = 0;
     s.addStat(Metric.researchCompleted, 1);
     s.xp += config.player.xpPerResearch;
-    return true;
   }
 
   // ---------------------------------------------------------------- planets

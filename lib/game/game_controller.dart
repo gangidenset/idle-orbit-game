@@ -54,6 +54,13 @@ class DecorationUnlockedEvent extends GameEvent {
   final DecorationConfig decoration;
 }
 
+/// A research level finished.
+class ResearchCompletedEvent extends GameEvent {
+  ResearchCompletedEvent(this.node, this.level);
+  final UpgradeConfig node;
+  final int level;
+}
+
 /// Ask the player (in-game, before the OS prompt) to enable reminders.
 class NotificationPromptEvent extends GameEvent {}
 
@@ -227,6 +234,8 @@ class GameController extends ChangeNotifier {
   /// Advances the game by [dt] seconds of active play. Public for tests.
   void advance(double dt) {
     engine.tick(state, dt, nowMs: nowMs, mods: mods);
+    final done = engine.advanceResearch(state, dt);
+    if (done != null) _researchDone(done);
     _sinceSave += dt;
     if (_sinceSave >= config.autosaveSeconds) {
       _sinceSave = 0;
@@ -340,11 +349,36 @@ class GameController extends ChangeNotifier {
     return true;
   }
 
-  bool doResearch(String id) {
-    if (!engine.doResearch(state, id)) return false;
-    analytics.logEvent(
-        AnalyticsEvents.research, {'research': id, 'level': state.researchLevel(id)});
+  void _researchDone(String id) {
+    final node = config.researchNode(id);
+    analytics.logEvent(AnalyticsEvents.research, {'research': id, 'level': state.researchLevel(id)});
+    _emit(ResearchCompletedEvent(node, state.researchLevel(id)));
     _commit();
+  }
+
+  /// Shortens the current research with a rewarded ad (premium: no ad).
+  Future<bool> speedUpResearch() async {
+    if (state.activeResearch == null) return false;
+    if (!await _watchRewarded(RewardedPlacement.researchSpeedup)) return false;
+    final done = engine.advanceResearch(state, config.researchAdSpeedupMinutes * 60);
+    if (done != null) {
+      _researchDone(done);
+    } else {
+      _commit();
+    }
+    return true;
+  }
+
+  /// Starts researching the next level of [id].
+  bool doResearch(String id) {
+    final level = state.researchLevel(id);
+    if (!engine.doResearch(state, id)) return false;
+    // Instant nodes complete on start.
+    if (state.researchLevel(id) > level) {
+      _researchDone(id);
+    } else {
+      _commit();
+    }
     return true;
   }
 

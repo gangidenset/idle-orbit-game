@@ -17,6 +17,7 @@ Map<String, double> simulate(BalanceConfig config, {double hours = 12, bool verb
   var t = 0.0;
   while (t < hours * 3600) {
     bot.engine.tick(s, 1, nowMs: t0 + (t * 1000).round());
+    bot.engine.advanceResearch(s, 1);
     t += 1;
     if (t % 5 != 0) continue;
     final p = bot.tryUnlockPlanet(s);

@@ -27,10 +27,21 @@ class SimBot {
     return null;
   }
 
-  /// Spends resources: research first, then the cheapest facility/robot.
+  /// Spends resources: starts the cheapest affordable research (one at a
+  /// time), then buys the cheapest facility/robot.
   void spend(GameState s) {
-    for (final r in config.research) {
-      engine.doResearch(s, r.id);
+    if (s.activeResearch == null) {
+      String? pick;
+      var pickCost = double.infinity;
+      for (final r in config.research) {
+        if (engine.researchBlock(s, r.id) != UpgradeBlock.none) continue;
+        final c = r.costForLevel(s.researchLevel(r.id));
+        if (c < pickCost) {
+          pickCost = c;
+          pick = r.id;
+        }
+      }
+      if (pick != null) engine.doResearch(s, pick);
     }
     for (var i = 0; i < 50; i++) {
       String? best;

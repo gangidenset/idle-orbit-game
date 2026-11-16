@@ -51,6 +51,8 @@ python3 tool/clean_sprite.py 元画像.png assets/art/facility_ore_mine_t1.png
 ## 取り込み済み
 
 - 鉱石採掘施設 1〜6段階（`facility_ore_mine_t1`〜`t6`）
+- 発電施設 1〜6段階（`facility_power_plant_t1`〜`t6`）
+- 合金精錬施設 1〜4段階（`facility_alloy_smelter_t1`〜`t4`）
 - 背景 5惑星（`bg_*.jpg`）
 - 惑星の表面 5惑星（`planet_tex_*.jpg`）
 

@@ -631,8 +631,12 @@ class _Base extends Component with HasGameReference<OrbitScene> {
 
     final sprite = s.tier > 0 ? game.art['facility_${s.id}_t${s.tier}'] : null;
     if (sprite != null) {
-      final h = 18.0 + s.tier * 7;
-      final w = h * sprite.width / sprite.height;
+      // Fit inside a box of (size * 1.15) x size so wide, low buildings keep
+      // the same footprint as tall ones instead of crowding their neighbours.
+      final size = 18.0 + s.tier * 7;
+      final aspect = sprite.width / sprite.height;
+      final h = aspect > 1.15 ? size * 1.15 / aspect : size;
+      final w = h * aspect;
       canvas.drawImageRect(sprite, Rect.fromLTWH(0, 0, sprite.width.toDouble(), sprite.height.toDouble()),
           Rect.fromLTWH(-w / 2, -h + 2, w, h), _imagePaint);
       canvas.restore();
